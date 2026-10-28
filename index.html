@@ -10,50 +10,99 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+
+        /* רקע חמ"ל טקטי עם רשת נעה */
         body {
-            background-color: #0f172a; 
+            background-color: #050b14;
             background-image: 
-                radial-gradient(circle at top right, #1e293b 0%, transparent 40%),
-                radial-gradient(circle at bottom left, #0f172a 0%, #020617 100%),
-                url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23fbbf24' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+                linear-gradient(rgba(15, 23, 42, 0.9), rgba(5, 11, 20, 0.95)),
+                linear-gradient(0deg, transparent 24%, rgba(6, 182, 212, 0.05) 25%, rgba(6, 182, 212, 0.05) 26%, transparent 27%, transparent 74%, rgba(6, 182, 212, 0.05) 75%, rgba(6, 182, 212, 0.05) 76%, transparent 77%, transparent),
+                linear-gradient(90deg, transparent 24%, rgba(6, 182, 212, 0.05) 25%, rgba(6, 182, 212, 0.05) 26%, transparent 27%, transparent 74%, rgba(6, 182, 212, 0.05) 75%, rgba(6, 182, 212, 0.05) 76%, transparent 77%, transparent);
+            background-size: 100% 100%, 50px 50px, 50px 50px;
             color: #e2e8f0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            animation: gridMove 20s linear infinite;
         }
 
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #0f172a; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; border: 1px solid #1e293b; }
-        ::-webkit-scrollbar-thumb:hover { background: #f59e0b; }
+        @keyframes gridMove {
+            0% { background-position: 0 0, 0 0, 0 0; }
+            100% { background-position: 0 0, 0 50px, 50px 0; }
+        }
+
+        /* אפקט מסך פלזמה / Scanlines */
+        .scanlines {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0) 50%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0.2));
+            background-size: 100% 4px;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.6;
+        }
+
+        /* גופן מונוספייס צבאי למספרים וכותרות טקטיות */
+        .font-tactical {
+            font-family: 'Share Tech Mono', monospace;
+        }
+
+        /* פינות חתוכות לחלוניות (Cyberpunk/Tactical style) */
+        .tactical-panel {
+            background: rgba(15, 23, 42, 0.85);
+            border: 1px solid rgba(6, 182, 212, 0.3);
+            box-shadow: inset 0 0 20px rgba(6, 182, 212, 0.05), 0 0 15px rgba(0,0,0,0.5);
+            backdrop-filter: blur(10px);
+            position: relative;
+        }
+        .tactical-panel::before, .tactical-panel::after {
+            content: ''; position: absolute; width: 15px; height: 15px; border: 2px solid transparent;
+        }
+        .tactical-panel::before { top: -1px; left: -1px; border-top-color: #06b6d4; border-left-color: #06b6d4; }
+        .tactical-panel::after { bottom: -1px; right: -1px; border-bottom-color: #06b6d4; border-right-color: #06b6d4; }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #020617; }
+        ::-webkit-scrollbar-thumb { background: #06b6d4; border-radius: 3px; }
 
         input[type="checkbox"] {
             accent-color: #f59e0b;
             cursor: pointer;
+            filter: drop-shadow(0 0 5px rgba(245, 158, 11, 0.5));
         }
 
         select, input[type="text"], input[type="number"] {
-            background-color: #1e293b;
-            color: #f8fafc;
-            border: 1px solid #475569;
-            transition: all 0.2s ease;
+            background-color: rgba(2, 6, 23, 0.7);
+            color: #22d3ee;
+            border: 1px solid #1e293b;
+            border-bottom: 2px solid #06b6d4;
+            transition: all 0.3s ease;
+            font-family: 'Share Tech Mono', monospace;
         }
         select:focus, input:focus {
             outline: none;
             border-color: #f59e0b;
-            box-shadow: 0 0 8px rgba(245, 158, 11, 0.4);
+            border-bottom: 2px solid #f59e0b;
+            box-shadow: 0 0 15px rgba(245, 158, 11, 0.2);
+            color: #f59e0b;
         }
+        select option { background-color: #0f172a; color: #22d3ee; }
 
-        /* עיצוב ה-PDF הרשמי להדפסה */
+        /* אפקט זוהר משתנה לרכיבים פעילים */
+        .glow-amber { text-shadow: 0 0 10px rgba(245, 158, 11, 0.7); }
+        .glow-cyan { text-shadow: 0 0 10px rgba(6, 182, 212, 0.7); }
+
+        /* עיצוב ה-PDF הרשמי להדפסה (נשאר נקי ורשמי) */
         #pdf-content {
             font-family: 'Arial', sans-serif;
-            color: #1e293b;
+            color: #0f172a;
             direction: ltr;
             padding: 40px;
             background-color: white;
             display: none;
         }
-        
         #pdf-content h1 {
             color: #0f172a;
-            font-size: 24px;
+            font-size: 26px;
             font-weight: 900;
             border-bottom: 4px solid #1e293b;
             padding-bottom: 10px;
@@ -61,7 +110,6 @@
             text-transform: uppercase;
             letter-spacing: 1px;
         }
-
         #pdf-content h2 {
             color: #1e293b;
             font-size: 16px;
@@ -72,150 +120,155 @@
             padding: 6px 10px;
             border-left: 4px solid #f59e0b;
         }
-
-        #pdf-content ul {
-            list-style-type: none;
-            padding-left: 20px;
-        }
-
-        #pdf-content ul li {
-            margin-bottom: 6px;
-            position: relative;
-            font-size: 14px;
-        }
-
+        #pdf-content ul { list-style-type: none; padding-left: 20px; }
+        #pdf-content ul li { margin-bottom: 6px; position: relative; font-size: 14px; font-weight: 500; }
         #pdf-content ul li:before {
-            content: "■";
-            color: #64748b;
-            font-size: 10px;
-            position: absolute;
-            left: -15px;
-            top: 3px;
+            content: "■"; color: #64748b; font-size: 10px; position: absolute; left: -15px; top: 3px;
         }
     </style>
 </head>
-<body class="font-sans min-h-screen pb-10">
+<body class="min-h-screen pb-10 relative">
 
-    <header class="bg-slate-900/80 border-b border-slate-700 shadow-lg backdrop-blur-md sticky top-0 z-50">
+    <!-- שכבת הסריקה -->
+    <div class="scanlines"></div>
+
+    <header class="bg-slate-900/90 border-b border-cyan-800/50 shadow-[0_0_30px_rgba(6,182,212,0.15)] backdrop-blur-md sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
             <div class="flex items-center space-x-4 space-x-reverse">
-                <svg class="w-10 h-10 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-                </svg>
+                <!-- לוגו טקטי מותאם (רדיו MANET) -->
+                <div class="relative flex items-center justify-center w-12 h-12">
+                    <svg class="absolute w-full h-full text-cyan-500 animate-[spin_10s_linear_infinite] opacity-50" viewBox="0 0 100 100" fill="none">
+                        <circle cx="50" cy="50" r="45" stroke="currentColor" stroke-width="1" stroke-dasharray="4 4"/>
+                        <circle cx="50" cy="50" r="35" stroke="currentColor" stroke-width="1" stroke-dasharray="10 20"/>
+                    </svg>
+                    <svg class="w-8 h-8 text-amber-500 relative z-10 filter drop-shadow-[0_0_8px_rgba(245,158,11,0.8)]" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 3v3a2 2 0 01-2 2H3m18 0h-3a2 2 0 01-2-2V3m0 8h-6a2 2 0 00-2 2v8a2 2 0 002 2h6a2 2 0 002-2v-8a2 2 0 00-2-2zM3 14v4a2 2 0 002 2h3m10-6h1.5a2.5 2.5 0 000-5H18"></path>
+                    </svg>
+                </div>
                 <div>
-                    <h1 class="text-2xl font-black tracking-wider text-white">BNET <span class="text-amber-500">TACTICAL MANIFEST</span></h1>
-                    <p class="text-xs text-slate-400 font-mono tracking-widest">ADVANCED MANET LOGISTICS O.S.</p>
+                    <h1 class="text-3xl font-black tracking-widest text-white font-tactical">BNET <span class="text-amber-500 glow-amber">TACTICAL</span></h1>
+                    <p class="text-[10px] text-cyan-400 font-tactical tracking-[0.2em] opacity-80">ADVANCED MANET LOGISTICS O.S. // V.26.4</p>
                 </div>
             </div>
-            <div class="hidden md:flex text-slate-500 font-mono text-xs items-center space-x-2 space-x-reverse">
-                <span class="inline-block w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                <span>SYSTEM ONLINE</span>
+            <div class="hidden md:flex text-cyan-500 font-tactical text-xs items-center space-x-3 space-x-reverse bg-cyan-950/30 px-3 py-1 rounded border border-cyan-800">
+                <span class="inline-block w-2 h-2 rounded-full bg-amber-500 animate-pulse drop-shadow-[0_0_5px_rgba(245,158,11,1)]"></span>
+                <span>SYS_SECURE</span>
+                <span id="digital-clock" class="ml-2 text-white"></span>
             </div>
         </div>
     </header>
 
-    <div class="max-w-7xl mx-auto py-8 px-4 grid grid-cols-1 lg:grid-cols-2 gap-8">
+    <div class="max-w-7xl mx-auto py-8 px-4 grid grid-cols-1 lg:grid-cols-2 gap-8 relative z-10">
         
         <!-- צד ימין: טופס הזנה -->
-        <div class="bg-slate-800/90 p-6 rounded-xl shadow-[0_0_20px_rgba(0,0,0,0.5)] border border-slate-700 backdrop-blur-sm">
-            <div class="flex items-center space-x-2 space-x-reverse mb-6 border-b border-slate-600 pb-3">
-                <svg class="w-6 h-6 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2"></path></svg>
-                <h2 class="text-xl font-bold text-amber-500 uppercase tracking-wide">Mission Details & Docs</h2>
+        <div class="tactical-panel p-6 rounded-sm">
+            <div class="flex items-center justify-between mb-6 border-b border-cyan-800/50 pb-3">
+                <div class="flex items-center space-x-2 space-x-reverse">
+                    <svg class="w-5 h-5 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    <h2 class="text-lg font-bold text-cyan-400 font-tactical tracking-widest uppercase">[ MISSION_PARAMETERS ]</h2>
+                </div>
             </div>
             
-            <!-- פרטי נסיעה ומסמכים -->
-            <div class="grid grid-cols-2 gap-4 mb-4">
+            <div class="grid grid-cols-2 gap-5 mb-5">
                 <div>
-                    <label class="block text-xs font-mono text-slate-400 mb-1">DESTINATION (מדינה/יעד)</label>
-                    <input type="text" id="destination" placeholder="e.g. Denmark" class="w-full p-2 rounded">
+                    <label class="block text-[11px] font-tactical text-cyan-500 mb-1 tracking-wider">TARGET_DESTINATION</label>
+                    <input type="text" id="destination" placeholder="e.g. Denmark" class="w-full p-2 text-sm">
                 </div>
                 <div>
-                    <label class="block text-xs font-mono text-slate-400 mb-1">DATES (תאריכים)</label>
-                    <input type="text" id="dates" placeholder="e.g. Oct 4-11, 2026" class="w-full p-2 rounded">
+                    <label class="block text-[11px] font-tactical text-cyan-500 mb-1 tracking-wider">OPERATION_DATES</label>
+                    <input type="text" id="dates" placeholder="e.g. Oct 4-11, 2026" class="w-full p-2 text-sm">
                 </div>
             </div>
 
-            <!-- העלאת תמונות קרנה -->
-            <div class="mb-6 bg-slate-900/50 p-3 rounded border border-slate-700">
-                <label class="block text-xs font-mono text-slate-400 mb-2">ATTACH CARNET IMAGES (העלאת קרנה)</label>
-                <input type="file" id="carnetImages" accept="image/*" multiple class="block w-full text-sm text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-xs file:font-bold file:bg-amber-600 file:text-slate-900 hover:file:bg-amber-500 cursor-pointer">
+            <div class="mb-8 bg-slate-900/60 p-4 border border-slate-700 relative">
+                <div class="absolute top-0 left-0 w-2 h-2 border-t border-l border-cyan-500"></div>
+                <div class="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-cyan-500"></div>
+                <label class="block text-[11px] font-tactical text-cyan-500 mb-2 tracking-wider">ATTACH_ATA_CARNET_DOCS</label>
+                <input type="file" id="carnetImages" accept="image/*" multiple class="block w-full text-xs font-tactical text-slate-400 file:mr-4 file:py-1.5 file:px-3 file:border-0 file:text-xs file:font-bold file:bg-cyan-900 file:text-cyan-100 hover:file:bg-cyan-800 cursor-pointer transition">
                 <div id="imagePreviewContainer" class="flex flex-wrap gap-2 mt-3 empty:hidden"></div>
             </div>
 
             <!-- יצירת מארז חדש -->
-            <div class="bg-slate-900/50 p-5 rounded-lg border border-slate-700 shadow-inner mb-6 relative overflow-hidden">
-                <div class="absolute top-0 right-0 w-16 h-16 bg-amber-500/10 rounded-bl-full pointer-events-none"></div>
+            <div class="bg-slate-900/80 p-5 border border-cyan-900/50 shadow-inner mb-6 relative">
+                <div class="absolute -left-1 top-4 w-2 h-8 bg-amber-500"></div>
                 
-                <h3 class="font-bold text-lg mb-4 text-white">CONTAINER BUILDER</h3>
+                <h3 class="font-bold text-base mb-4 text-white font-tactical tracking-wide">[ CONTAINER_BUILDER ]</h3>
                 
                 <div class="grid grid-cols-3 gap-4 mb-5">
                     <div>
-                        <label class="block text-xs font-mono text-slate-400 mb-1">TYPE</label>
-                        <select id="boxType" class="w-full p-2 rounded font-medium">
+                        <label class="block text-[10px] font-tactical text-slate-400 mb-1">UNIT_TYPE</label>
+                        <select id="boxType" class="w-full p-2 text-sm">
                             <option value="Pelican">Pelican</option>
                             <option value="Ski Bag">Ski Bag</option>
                         </select>
                     </div>
                     <div>
-                        <label class="block text-xs font-mono text-slate-400 mb-1">NUMBER</label>
-                        <input type="number" id="boxNumber" value="1" class="w-full p-2 rounded text-center font-bold text-amber-500">
+                        <label class="block text-[10px] font-tactical text-slate-400 mb-1">UNIT_ID</label>
+                        <input type="number" id="boxNumber" value="1" class="w-full p-2 text-center font-bold text-amber-500 text-lg">
                     </div>
                     <div>
-                        <label class="block text-xs font-mono text-slate-400 mb-1">OWNER</label>
-                        <input type="text" id="boxOwner" placeholder="e.g. Elad" class="w-full p-2 rounded">
+                        <label class="block text-[10px] font-tactical text-slate-400 mb-1">OPERATOR</label>
+                        <input type="text" id="boxOwner" placeholder="e.g. Elad" class="w-full p-2 text-sm">
                     </div>
                 </div>
 
-                <div class="mb-3">
-                    <label class="block text-xs font-mono text-slate-400 mb-2">EQUIPMENT SELECTOR</label>
-                    <div id="equipmentList" class="grid grid-cols-1 gap-2 h-72 overflow-y-auto bg-slate-800 p-3 border border-slate-700 rounded shadow-inner mb-4">
-                        <!-- פריטים יוזרקו לכאן מ-JS -->
+                <div class="mb-4">
+                    <label class="block text-[10px] font-tactical text-slate-400 mb-2">AVAILABLE_ASSETS</label>
+                    <!-- רשימת הציוד עברה שדרוג צבעים -->
+                    <div id="equipmentList" class="grid grid-cols-1 gap-2 h-72 overflow-y-auto bg-slate-950/80 p-3 border border-slate-700/50 mb-4">
+                        <!-- פריטים יוזרקו לכאן -->
                     </div>
                 </div>
 
-                <!-- הוספת פריט חדש ידנית -->
-                <div class="flex items-center space-x-2 space-x-reverse mb-6 bg-slate-800 p-1 border rounded border-slate-600 focus-within:border-amber-500 transition-colors">
-                    <input type="text" id="customItemInput" placeholder="Add custom item to database..." class="flex-grow border-none focus:ring-0 text-sm p-2 bg-transparent text-white placeholder-slate-500" dir="ltr">
-                    <button onclick="addCustomItem()" class="bg-slate-700 hover:bg-amber-600 text-slate-300 hover:text-white text-xs font-bold py-2 px-4 rounded transition flex items-center">
-                        <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
-                        ADD
+                <div class="flex items-center space-x-2 space-x-reverse mb-6">
+                    <input type="text" id="customItemInput" placeholder="> Input custom asset..." class="flex-grow border-none text-xs p-2 bg-slate-950 text-cyan-300 placeholder-slate-600 focus:ring-1 focus:ring-cyan-500" dir="ltr">
+                    <button onclick="addCustomItem()" class="bg-slate-800 hover:bg-cyan-700 border border-slate-600 hover:border-cyan-400 text-slate-300 hover:text-white text-[10px] font-tactical py-2 px-3 transition flex items-center tracking-wider">
+                        [ ADD_ASSET ]
                     </button>
                 </div>
 
-                <button onclick="addContainer()" class="w-full bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-500 hover:to-amber-400 text-slate-900 font-extrabold py-3 px-4 rounded transition shadow-[0_0_15px_rgba(245,158,11,0.3)] hover:shadow-[0_0_20px_rgba(245,158,11,0.5)] transform hover:-translate-y-0.5 uppercase tracking-wide">
-                    Commit Container to Manifest
+                <button onclick="addContainer()" class="w-full bg-amber-600 hover:bg-amber-500 text-slate-900 font-black font-tactical text-lg py-3 px-4 transition shadow-[0_0_15px_rgba(245,158,11,0.2)] hover:shadow-[0_0_25px_rgba(245,158,11,0.6)] uppercase tracking-[0.2em] relative overflow-hidden group">
+                    <span class="relative z-10">COMMIT_TO_MANIFEST</span>
+                    <div class="absolute top-0 -left-full w-1/2 h-full bg-gradient-to-r from-transparent via-white to-transparent opacity-30 group-hover:animate-[shimmer_1.5s_infinite]"></div>
                 </button>
             </div>
         </div>
 
         <!-- צד שמאל: תצוגה מקדימה וייצוא -->
-        <div class="bg-slate-800/90 p-6 rounded-xl shadow-[0_0_20px_rgba(0,0,0,0.5)] border border-slate-700 backdrop-blur-sm flex flex-col relative overflow-hidden">
-            <div class="absolute bottom-0 left-0 opacity-5 pointer-events-none">
-                <svg width="200" height="200" viewBox="0 0 24 24" fill="white"><path d="M12 2L2 22h20L12 2zm0 4.5l7 14H5l7-14z"/></svg>
+        <div class="tactical-panel p-6 rounded-sm flex flex-col relative overflow-hidden">
+            <!-- מכ"ם רשת בצד שמאל למטה -->
+            <div class="absolute bottom-[-50px] left-[-50px] opacity-[0.03] pointer-events-none">
+                <svg width="300" height="300" viewBox="0 0 100 100">
+                    <circle cx="50" cy="50" r="40" stroke="white" stroke-width="0.5" fill="none"/>
+                    <circle cx="50" cy="50" r="30" stroke="white" stroke-width="0.5" fill="none"/>
+                    <circle cx="50" cy="50" r="20" stroke="white" stroke-width="0.5" fill="none"/>
+                    <line x1="50" y1="10" x2="50" y2="90" stroke="white" stroke-width="0.5"/>
+                    <line x1="10" y1="50" x2="90" y2="50" stroke="white" stroke-width="0.5"/>
+                </svg>
             </div>
 
-            <div class="flex justify-between items-center mb-6 border-b border-slate-600 pb-3 relative z-10">
+            <div class="flex justify-between items-center mb-6 border-b border-cyan-800/50 pb-3 relative z-10">
                 <div class="flex items-center space-x-2 space-x-reverse">
-                    <svg class="w-6 h-6 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-                    <h2 class="text-xl font-bold text-amber-500 uppercase tracking-wide">Live Manifest Preview</h2>
+                    <svg class="w-5 h-5 text-amber-500 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+                    <h2 class="text-lg font-bold text-amber-500 font-tactical tracking-widest uppercase">[ LIVE_PREVIEW ]</h2>
                 </div>
-                <button onclick="generatePDF()" class="bg-slate-700 hover:bg-emerald-600 border border-emerald-600/50 hover:border-emerald-500 text-emerald-400 hover:text-white font-bold py-2 px-5 rounded transition flex items-center shadow-lg group">
-                    <svg class="w-5 h-5 ml-2 group-hover:animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
-                    EXPORT PDF
+                <button onclick="generatePDF()" class="bg-cyan-900/50 hover:bg-cyan-600 border border-cyan-500 text-cyan-300 hover:text-slate-900 font-tactical font-bold py-2 px-5 transition flex items-center shadow-[0_0_10px_rgba(6,182,212,0.3)] hover:shadow-[0_0_20px_rgba(6,182,212,0.8)] group text-sm tracking-wider">
+                    <svg class="w-4 h-4 ml-2 group-hover:translate-y-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                    GENERATE_REPORT.PDF
                 </button>
             </div>
             
-            <div id="previewArea" class="flex-grow overflow-y-auto bg-slate-900/80 p-5 rounded border border-slate-700 text-left font-mono relative z-10 h-[600px]" dir="ltr">
-                <div class="flex flex-col items-center justify-center h-full text-slate-500 opacity-70">
-                    <svg class="w-16 h-16 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"></path></svg>
-                    <p class="text-sm">NO CONTAINERS LOADED YET...</p>
+            <div id="previewArea" class="flex-grow overflow-y-auto bg-slate-950/90 p-5 border border-slate-700/50 text-left font-mono relative z-10 h-[600px] shadow-inner" dir="ltr">
+                <div class="flex flex-col items-center justify-center h-full text-slate-600">
+                    <svg class="w-16 h-16 mb-4 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 002-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+                    <p class="text-xs font-tactical tracking-[0.2em] uppercase glow-cyan opacity-50">NO_ASSETS_DETECTED</p>
                 </div>
             </div>
         </div>
 
     </div>
 
-    <!-- התבנית המוסתרת ל-PDF -->
+    <!-- התבנית המוסתרת ל-PDF (נשארת נקייה וברורה להדפסה) -->
     <div id="pdf-content">
         <h1>TACTICAL EQUIPMENT MANIFEST</h1>
         <p><strong>Destination:</strong> <span id="pdf-dest"></span><br>
@@ -226,6 +279,12 @@
     </div>
 
     <script>
+        // הפעלת שעון דיגיטלי בראש העמוד
+        setInterval(() => {
+            const now = new Date();
+            document.getElementById('digital-clock').innerText = now.toISOString().substring(11,19) + " ZULU";
+        }, 1000);
+
         const masterEquipment = [
             "BNET HCLOS",
             "Power Supply",
@@ -271,7 +330,7 @@
         let snOptionsHTML = '';
 
         window.onload = () => {
-            qtyOptionsHTML = '<option value="">Qty</option>';
+            qtyOptionsHTML = '<option value="">QTY</option>';
             for(let i=1; i<=30; i++) {
                 qtyOptionsHTML += `<option value="${i}">${i}</option>`;
             }
@@ -305,9 +364,9 @@
             container.innerHTML = '';
             uploadedImages.forEach((imgSrc, index) => {
                 container.innerHTML += `
-                    <div class="relative w-16 h-16 border border-slate-600 rounded overflow-hidden group">
-                        <img src="${imgSrc}" class="object-cover w-full h-full opacity-80 group-hover:opacity-100 transition">
-                        <button onclick="removeImage(${index})" class="absolute top-0 right-0 bg-red-600/90 text-white text-[10px] w-4 h-4 flex items-center justify-center font-bold hover:bg-red-500">X</button>
+                    <div class="relative w-16 h-16 border border-cyan-600 rounded-sm overflow-hidden group">
+                        <img src="${imgSrc}" class="object-cover w-full h-full opacity-60 group-hover:opacity-100 transition filter contrast-125 sepia-[0.3] hue-rotate-[180deg]">
+                        <button onclick="removeImage(${index})" class="absolute top-0 right-0 bg-red-600/90 text-white text-[10px] w-4 h-4 flex items-center justify-center font-bold hover:bg-red-500 font-tactical">X</button>
                     </div>
                 `;
             });
@@ -316,7 +375,6 @@
         function removeImage(index) {
             uploadedImages.splice(index, 1);
             updateImagePreview();
-            // איפוס ה-input כדי שאפשר יהיה להעלות את אותו קובץ שוב אם נמחק בטעות
             document.getElementById('carnetImages').value = '';
         }
 
@@ -324,13 +382,13 @@
             const listDiv = document.getElementById('equipmentList');
             const id = `item-${index}`;
             const itemHTML = `
-                <div class="flex items-center space-x-2 space-x-reverse border-b border-slate-700/50 pb-2 mb-1 hover:bg-slate-700/30 p-1 rounded transition-colors">
-                    <input type="checkbox" id="${id}_check" value="${itemName}" class="w-5 h-5 rounded bg-slate-800 border-slate-600 focus:ring-amber-500 focus:ring-opacity-50">
-                    <label for="${id}_check" class="text-sm font-medium text-slate-300 flex-grow cursor-pointer" dir="ltr">${itemName}</label>
-                    <select id="${id}_qty" class="w-16 text-xs text-center" dir="ltr">
+                <div class="flex items-center space-x-2 space-x-reverse border-b border-slate-700/50 pb-2 mb-1 hover:bg-cyan-900/20 p-1 transition-colors">
+                    <input type="checkbox" id="${id}_check" value="${itemName}" class="w-4 h-4 rounded-sm bg-slate-900 border-cyan-700 focus:ring-amber-500">
+                    <label for="${id}_check" class="text-[13px] text-slate-300 flex-grow cursor-pointer" dir="ltr">${itemName}</label>
+                    <select id="${id}_qty" class="w-14 text-[10px] text-center" dir="ltr">
                         ${qtyOptionsHTML}
                     </select>
-                    <select id="${id}_sn" class="w-16 text-xs text-center" dir="ltr">
+                    <select id="${id}_sn" class="w-14 text-[10px] text-center" dir="ltr">
                         ${snOptionsHTML}
                     </select>
                 </div>
@@ -343,7 +401,7 @@
             const newItemName = inputEl.value.trim();
             
             if (!newItemName) {
-                alert("Please type an item name first.");
+                alert("ACCESS DENIED: Item name missing.");
                 return;
             }
 
@@ -380,12 +438,12 @@
             });
 
             if (selectedItems.length === 0) {
-                alert("System Error: Container is empty. Please select at least one item.");
+                alert("SYS_ERROR: Container empty. Select assets.");
                 return;
             }
 
             containersData.push({
-                title: `${boxType} ${boxNumber}` + (boxOwner ? ` - ${boxOwner}` : ''),
+                title: `${boxType.toUpperCase()} ${boxNumber}` + (boxOwner ? ` // OP: ${boxOwner.toUpperCase()}` : ''),
                 items: selectedItems
             });
 
@@ -406,7 +464,7 @@
             const previewArea = document.getElementById('previewArea');
             const pdfContainers = document.getElementById('pdf-containers');
             
-            if (containersData.length > 0 && previewArea.innerHTML.includes('NO CONTAINERS LOADED')) {
+            if (containersData.length > 0 && previewArea.innerHTML.includes('NO_ASSETS_DETECTED')) {
                 previewArea.innerHTML = ''; 
             }
             
@@ -415,15 +473,15 @@
 
             containersData.forEach(container => {
                 const containerHTML = `
-                    <div class="mb-5 bg-slate-800/80 p-3 rounded-lg border border-slate-700 shadow">
-                        <h2 class="font-bold text-amber-500 text-md mb-2 flex items-center">
-                            <span class="bg-amber-500 text-slate-900 px-2 py-0.5 rounded-sm mr-2 text-xs">BOX</span>
-                            ${container.title}
+                    <div class="mb-5 bg-slate-900/60 p-3 border-l-2 border-amber-500 shadow-[inset_0_0_10px_rgba(0,0,0,0.5)]">
+                        <h2 class="font-bold text-amber-500 text-sm mb-2 flex items-center font-tactical tracking-wider">
+                            <span class="bg-amber-500 text-slate-900 px-1 py-0 rounded-sm mr-2 text-[10px]">LOCKED</span>
+                            [ ${container.title} ]
                         </h2>
-                        <ul class="list-none space-y-1 text-slate-300 text-sm">
+                        <ul class="list-none space-y-1 text-cyan-100 text-[13px] font-sans">
                             ${container.items.map(item => `
                                 <li class="flex items-start">
-                                    <span class="text-amber-500 mr-2 mt-0.5">▸</span>
+                                    <span class="text-cyan-600 mr-2 mt-0">›</span>
                                     <span>${item}</span>
                                 </li>`).join('')}
                         </ul>
@@ -439,18 +497,16 @@
 
         function generatePDF() {
             if(containersData.length === 0) {
-                alert("System Error: No containers to export.");
+                alert("SYS_ERROR: No data to compile.");
                 return;
             }
 
-            document.getElementById('pdf-dest').innerText = document.getElementById('destination').value || 'TBD';
+            document.getElementById('pdf-dest').innerText = document.getElementById('destination').value || 'CLASSIFIED';
             document.getElementById('pdf-dates').innerText = document.getElementById('dates').value || 'TBD';
 
-            // הוספת תמונות הקרנה ל-PDF אם ישנן
             const pdfCarnetSection = document.getElementById('pdf-carnet-section');
             pdfCarnetSection.innerHTML = '';
             if (uploadedImages.length > 0) {
-                // page-break-before: always - מבטיח שהתמונות יתחילו בעמוד חדש ונקי
                 pdfCarnetSection.innerHTML = '<h1 style="page-break-before: always; margin-top: 20px;">ATA CARNET / DOCUMENTS</h1>';
                 uploadedImages.forEach(imgSrc => {
                     pdfCarnetSection.innerHTML += `
