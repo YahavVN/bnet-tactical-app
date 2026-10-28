@@ -1,290 +1,285 @@
 <!DOCTYPE html>
-<html lang="he" dir="rtl">
+<html lang="en" dir="ltr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BNET Tactical Equipment Manager</title>
+    <title>BNET // Tactical Logistics Manager</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- HTML2PDF -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
     
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+        :root {
+            --bg-base: #0B0F19;
+            --bg-panel: #111827;
+            --bg-elevated: #1F2937;
+            --accent: #10B981; /* Tactical Emerald */
+            --accent-hover: #059669;
+            --text-main: #F3F4F6;
+            --text-muted: #9CA3AF;
+            --border-color: rgba(255, 255, 255, 0.08);
+        }
 
-        /* רקע חמ"ל טקטי עם רשת נעה */
         body {
-            background-color: #050b14;
-            background-image: 
-                linear-gradient(rgba(15, 23, 42, 0.9), rgba(5, 11, 20, 0.95)),
-                linear-gradient(0deg, transparent 24%, rgba(6, 182, 212, 0.05) 25%, rgba(6, 182, 212, 0.05) 26%, transparent 27%, transparent 74%, rgba(6, 182, 212, 0.05) 75%, rgba(6, 182, 212, 0.05) 76%, transparent 77%, transparent),
-                linear-gradient(90deg, transparent 24%, rgba(6, 182, 212, 0.05) 25%, rgba(6, 182, 212, 0.05) 26%, transparent 27%, transparent 74%, rgba(6, 182, 212, 0.05) 75%, rgba(6, 182, 212, 0.05) 76%, transparent 77%, transparent);
-            background-size: 100% 100%, 50px 50px, 50px 50px;
-            color: #e2e8f0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            animation: gridMove 20s linear infinite;
+            background-color: var(--bg-base);
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            background-image: radial-gradient(circle at 50% 0%, rgba(16, 185, 129, 0.05) 0%, transparent 50%);
+            background-attachment: fixed;
+            -webkit-font-smoothing: antialiased;
         }
 
-        @keyframes gridMove {
-            0% { background-position: 0 0, 0 0, 0 0; }
-            100% { background-position: 0 0, 0 50px, 50px 0; }
+        .font-mono-data {
+            font-family: 'JetBrains Mono', monospace;
         }
 
-        /* אפקט מסך פלזמה / Scanlines */
-        .scanlines {
-            position: fixed;
-            top: 0; left: 0; width: 100vw; height: 100vh;
-            background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0) 50%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0.2));
-            background-size: 100% 4px;
-            pointer-events: none;
-            z-index: 9999;
-            opacity: 0.6;
-        }
-
-        /* גופן מונוספייס צבאי למספרים וכותרות טקטיות */
-        .font-tactical {
-            font-family: 'Share Tech Mono', monospace;
-        }
-
-        /* פינות חתוכות לחלוניות (Cyberpunk/Tactical style) */
-        .tactical-panel {
-            background: rgba(15, 23, 42, 0.85);
-            border: 1px solid rgba(6, 182, 212, 0.3);
-            box-shadow: inset 0 0 20px rgba(6, 182, 212, 0.05), 0 0 15px rgba(0,0,0,0.5);
-            backdrop-filter: blur(10px);
-            position: relative;
-        }
-        .tactical-panel::before, .tactical-panel::after {
-            content: ''; position: absolute; width: 15px; height: 15px; border: 2px solid transparent;
-        }
-        .tactical-panel::before { top: -1px; left: -1px; border-top-color: #06b6d4; border-left-color: #06b6d4; }
-        .tactical-panel::after { bottom: -1px; right: -1px; border-bottom-color: #06b6d4; border-right-color: #06b6d4; }
-
+        /* Custom Scrollbar */
         ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: #020617; }
-        ::-webkit-scrollbar-thumb { background: #06b6d4; border-radius: 3px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #374151; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #4B5563; }
 
-        input[type="checkbox"] {
-            accent-color: #f59e0b;
-            cursor: pointer;
-            filter: drop-shadow(0 0 5px rgba(245, 158, 11, 0.5));
+        /* Panel Styling */
+        .glass-panel {
+            background-color: rgba(17, 24, 39, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border-color);
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.5);
         }
 
-        select, input[type="text"], input[type="number"] {
-            background-color: rgba(2, 6, 23, 0.7);
-            color: #22d3ee;
-            border: 1px solid #1e293b;
-            border-bottom: 2px solid #06b6d4;
-            transition: all 0.3s ease;
-            font-family: 'Share Tech Mono', monospace;
+        /* Form Inputs */
+        input[type="text"], input[type="number"], select {
+            background-color: rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            border-radius: 0.5rem;
+            padding: 0.625rem 0.75rem;
+            font-size: 0.875rem;
+            transition: all 0.2s ease;
         }
-        select:focus, input:focus {
+        input:focus, select:focus {
             outline: none;
-            border-color: #f59e0b;
-            border-bottom: 2px solid #f59e0b;
-            box-shadow: 0 0 15px rgba(245, 158, 11, 0.2);
-            color: #f59e0b;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 1px var(--accent);
+            background-color: rgba(0, 0, 0, 0.4);
         }
-        select option { background-color: #0f172a; color: #22d3ee; }
+        select option { background-color: var(--bg-elevated); }
 
-        /* אפקט זוהר משתנה לרכיבים פעילים */
-        .glow-amber { text-shadow: 0 0 10px rgba(245, 158, 11, 0.7); }
-        .glow-cyan { text-shadow: 0 0 10px rgba(6, 182, 212, 0.7); }
+        /* Custom Checkbox */
+        .custom-checkbox {
+            appearance: none;
+            width: 1.25rem;
+            height: 1.25rem;
+            border: 1px solid #4B5563;
+            border-radius: 0.25rem;
+            background-color: rgba(0,0,0,0.2);
+            cursor: pointer;
+            position: relative;
+            transition: all 0.2s;
+            flex-shrink: 0;
+        }
+        .custom-checkbox:checked {
+            background-color: var(--accent);
+            border-color: var(--accent);
+        }
+        .custom-checkbox:checked::after {
+            content: '';
+            position: absolute;
+            left: 30%; top: 15%;
+            width: 35%; height: 60%;
+            border: solid #000;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+        }
 
-        /* עיצוב ה-PDF הרשמי להדפסה (נשאר נקי ורשמי) */
+        /* Item Row Hover Effect */
+        .item-row {
+            transition: all 0.2s ease;
+        }
+        .item-row:hover {
+            background-color: rgba(255, 255, 255, 0.03);
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        /* PDF Styles - Kept clean for official printing */
         #pdf-content {
-            font-family: 'Arial', sans-serif;
-            color: #0f172a;
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            color: #111827;
             direction: ltr;
             padding: 40px;
             background-color: white;
             display: none;
         }
         #pdf-content h1 {
-            color: #0f172a;
-            font-size: 26px;
-            font-weight: 900;
-            border-bottom: 4px solid #1e293b;
-            padding-bottom: 10px;
-            margin-bottom: 20px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            font-size: 22px; font-weight: 800;
+            border-bottom: 2px solid #111827;
+            padding-bottom: 12px; margin-bottom: 24px;
+            letter-spacing: 0.05em; text-transform: uppercase;
+        }
+        #pdf-content .meta-info {
+            font-size: 13px; color: #4B5563; margin-bottom: 30px;
         }
         #pdf-content h2 {
-            color: #1e293b;
-            font-size: 16px;
-            font-weight: bold;
-            margin-top: 20px;
-            margin-bottom: 10px;
-            background-color: #f1f5f9;
-            padding: 6px 10px;
-            border-left: 4px solid #f59e0b;
+            font-size: 15px; font-weight: 700;
+            background-color: #F3F4F6;
+            padding: 8px 12px; border-left: 4px solid #111827;
+            margin: 24px 0 12px 0;
         }
-        #pdf-content ul { list-style-type: none; padding-left: 20px; }
-        #pdf-content ul li { margin-bottom: 6px; position: relative; font-size: 14px; font-weight: 500; }
-        #pdf-content ul li:before {
-            content: "■"; color: #64748b; font-size: 10px; position: absolute; left: -15px; top: 3px;
+        #pdf-content ul { list-style: none; padding-left: 15px; }
+        #pdf-content ul li {
+            font-size: 13px; padding: 4px 0;
+            border-bottom: 1px solid #E5E7EB;
+            position: relative;
         }
+        #pdf-content ul li::before {
+            content: "•"; color: #9CA3AF; font-size: 18px;
+            position: absolute; left: -15px; top: 0;
+        }
+        #pdf-content ul li:last-child { border-bottom: none; }
     </style>
 </head>
-<body class="min-h-screen pb-10 relative">
+<body class="min-h-screen flex flex-col">
 
-    <!-- שכבת הסריקה -->
-    <div class="scanlines"></div>
-
-    <header class="bg-slate-900/90 border-b border-cyan-800/50 shadow-[0_0_30px_rgba(6,182,212,0.15)] backdrop-blur-md sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
-            <div class="flex items-center space-x-4 space-x-reverse">
-                <!-- לוגו טקטי מותאם (רדיו MANET) -->
-                <div class="relative flex items-center justify-center w-12 h-12">
-                    <svg class="absolute w-full h-full text-cyan-500 animate-[spin_10s_linear_infinite] opacity-50" viewBox="0 0 100 100" fill="none">
-                        <circle cx="50" cy="50" r="45" stroke="currentColor" stroke-width="1" stroke-dasharray="4 4"/>
-                        <circle cx="50" cy="50" r="35" stroke="currentColor" stroke-width="1" stroke-dasharray="10 20"/>
-                    </svg>
-                    <svg class="w-8 h-8 text-amber-500 relative z-10 filter drop-shadow-[0_0_8px_rgba(245,158,11,0.8)]" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 3v3a2 2 0 01-2 2H3m18 0h-3a2 2 0 01-2-2V3m0 8h-6a2 2 0 00-2 2v8a2 2 0 002 2h6a2 2 0 002-2v-8a2 2 0 00-2-2zM3 14v4a2 2 0 002 2h3m10-6h1.5a2.5 2.5 0 000-5H18"></path>
-                    </svg>
+    <!-- Top Navigation Bar -->
+    <nav class="border-b border-white/10 bg-[#0B0F19]/80 backdrop-blur-md sticky top-0 z-50">
+        <div class="max-w-[1400px] mx-auto px-6 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded bg-emerald-500/10 flex items-center justify-center border border-emerald-500/20">
+                    <svg class="w-5 h-5 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 002-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
                 </div>
-                <div>
-                    <h1 class="text-3xl font-black tracking-widest text-white font-tactical">BNET <span class="text-amber-500 glow-amber">TACTICAL</span></h1>
-                    <p class="text-[10px] text-cyan-400 font-tactical tracking-[0.2em] opacity-80">ADVANCED MANET LOGISTICS O.S. // V.26.4</p>
-                </div>
+                <h1 class="text-lg font-semibold tracking-wide">BNET <span class="text-emerald-500 font-normal">LOGISTICS</span></h1>
             </div>
-            <div class="hidden md:flex text-cyan-500 font-tactical text-xs items-center space-x-3 space-x-reverse bg-cyan-950/30 px-3 py-1 rounded border border-cyan-800">
-                <span class="inline-block w-2 h-2 rounded-full bg-amber-500 animate-pulse drop-shadow-[0_0_5px_rgba(245,158,11,1)]"></span>
-                <span>SYS_SECURE</span>
-                <span id="digital-clock" class="ml-2 text-white"></span>
+            <div class="flex items-center gap-4 text-sm font-mono-data text-gray-400">
+                <div class="flex items-center gap-2">
+                    <div class="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.8)]"></div>
+                    <span>SYSTEM READY</span>
+                </div>
             </div>
         </div>
-    </header>
+    </nav>
 
-    <div class="max-w-7xl mx-auto py-8 px-4 grid grid-cols-1 lg:grid-cols-2 gap-8 relative z-10">
-        
-        <!-- צד ימין: טופס הזנה -->
-        <div class="tactical-panel p-6 rounded-sm">
-            <div class="flex items-center justify-between mb-6 border-b border-cyan-800/50 pb-3">
-                <div class="flex items-center space-x-2 space-x-reverse">
-                    <svg class="w-5 h-5 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                    <h2 class="text-lg font-bold text-cyan-400 font-tactical tracking-widest uppercase">[ MISSION_PARAMETERS ]</h2>
-                </div>
-            </div>
+    <!-- Main Workspace -->
+    <main class="flex-grow max-w-[1400px] w-full mx-auto px-6 py-8">
+        <div class="grid grid-cols-1 xl:grid-cols-12 gap-8 items-start">
             
-            <div class="grid grid-cols-2 gap-5 mb-5">
-                <div>
-                    <label class="block text-[11px] font-tactical text-cyan-500 mb-1 tracking-wider">TARGET_DESTINATION</label>
-                    <input type="text" id="destination" placeholder="e.g. Denmark" class="w-full p-2 text-sm">
+            <!-- LEFT COLUMN: BUILDER (Controls) -->
+            <div class="xl:col-span-7 space-y-6">
+                
+                <!-- Mission Parameters Panel -->
+                <div class="glass-panel p-6">
+                    <h2 class="text-sm font-semibold text-gray-300 uppercase tracking-wider mb-4 flex items-center gap-2">
+                        <svg class="w-4 h-4 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        Mission Parameters
+                    </h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs text-gray-400 mb-1.5">DESTINATION</label>
+                            <input type="text" id="destination" placeholder="Enter country or location" class="w-full">
+                        </div>
+                        <div>
+                            <label class="block text-xs text-gray-400 mb-1.5">DATES</label>
+                            <input type="text" id="dates" placeholder="e.g., Oct 4-11, 2026" class="w-full">
+                        </div>
+                    </div>
+
+                    <div class="mt-4 pt-4 border-t border-white/5">
+                        <label class="block text-xs text-gray-400 mb-2">ATTACH ATA CARNET / DOCUMENTS</label>
+                        <input type="file" id="carnetImages" accept="image/*" multiple class="block w-full text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-gray-800 file:text-gray-300 hover:file:bg-gray-700 cursor-pointer transition">
+                        <div id="imagePreviewContainer" class="flex flex-wrap gap-3 mt-4 empty:hidden"></div>
+                    </div>
                 </div>
-                <div>
-                    <label class="block text-[11px] font-tactical text-cyan-500 mb-1 tracking-wider">OPERATION_DATES</label>
-                    <input type="text" id="dates" placeholder="e.g. Oct 4-11, 2026" class="w-full p-2 text-sm">
+
+                <!-- Container Builder Panel -->
+                <div class="glass-panel flex flex-col h-[700px]">
+                    <div class="p-6 border-b border-white/5 bg-white/[0.02]">
+                        <h2 class="text-sm font-semibold text-gray-300 uppercase tracking-wider mb-4 flex items-center gap-2">
+                            <svg class="w-4 h-4 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>
+                            Container Configuration
+                        </h2>
+                        <div class="grid grid-cols-3 gap-4">
+                            <div>
+                                <label class="block text-xs text-gray-400 mb-1.5">UNIT TYPE</label>
+                                <select id="boxType" class="w-full">
+                                    <option value="Pelican">Pelican Case</option>
+                                    <option value="Ski Bag">Ski Bag</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-xs text-gray-400 mb-1.5">UNIT ID</label>
+                                <input type="number" id="boxNumber" value="1" class="w-full font-mono-data text-emerald-400 font-bold text-center">
+                            </div>
+                            <div>
+                                <label class="block text-xs text-gray-400 mb-1.5">OWNER / OPERATOR</label>
+                                <input type="text" id="boxOwner" placeholder="Name" class="w-full">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Equipment List (Scrollable) -->
+                    <div class="flex-grow overflow-y-auto p-4 space-y-1.5" id="equipmentList">
+                        <!-- Items injected here by JS -->
+                    </div>
+
+                    <!-- Add Custom Item & Submit -->
+                    <div class="p-6 border-t border-white/5 bg-white/[0.02]">
+                        <div class="flex gap-3 mb-5">
+                            <input type="text" id="customItemInput" placeholder="Add custom equipment to database..." class="flex-grow">
+                            <button onclick="addCustomItem()" class="px-4 py-2 bg-gray-800 hover:bg-gray-700 text-white rounded-md text-sm font-medium transition border border-gray-600">
+                                Add to DB
+                            </button>
+                        </div>
+                        <button onclick="addContainer()" class="w-full py-3.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg font-semibold tracking-wide transition shadow-[0_0_15px_rgba(16,185,129,0.2)] hover:shadow-[0_0_20px_rgba(16,185,129,0.4)] flex items-center justify-center gap-2">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                            ADD CONTAINER TO MANIFEST
+                        </button>
+                    </div>
                 </div>
             </div>
 
-            <div class="mb-8 bg-slate-900/60 p-4 border border-slate-700 relative">
-                <div class="absolute top-0 left-0 w-2 h-2 border-t border-l border-cyan-500"></div>
-                <div class="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-cyan-500"></div>
-                <label class="block text-[11px] font-tactical text-cyan-500 mb-2 tracking-wider">ATTACH_ATA_CARNET_DOCS</label>
-                <input type="file" id="carnetImages" accept="image/*" multiple class="block w-full text-xs font-tactical text-slate-400 file:mr-4 file:py-1.5 file:px-3 file:border-0 file:text-xs file:font-bold file:bg-cyan-900 file:text-cyan-100 hover:file:bg-cyan-800 cursor-pointer transition">
-                <div id="imagePreviewContainer" class="flex flex-wrap gap-2 mt-3 empty:hidden"></div>
-            </div>
-
-            <!-- יצירת מארז חדש -->
-            <div class="bg-slate-900/80 p-5 border border-cyan-900/50 shadow-inner mb-6 relative">
-                <div class="absolute -left-1 top-4 w-2 h-8 bg-amber-500"></div>
-                
-                <h3 class="font-bold text-base mb-4 text-white font-tactical tracking-wide">[ CONTAINER_BUILDER ]</h3>
-                
-                <div class="grid grid-cols-3 gap-4 mb-5">
-                    <div>
-                        <label class="block text-[10px] font-tactical text-slate-400 mb-1">UNIT_TYPE</label>
-                        <select id="boxType" class="w-full p-2 text-sm">
-                            <option value="Pelican">Pelican</option>
-                            <option value="Ski Bag">Ski Bag</option>
-                        </select>
+            <!-- RIGHT COLUMN: LIVE MANIFEST -->
+            <div class="xl:col-span-5 h-[calc(100vh-8rem)] sticky top-24">
+                <div class="glass-panel h-full flex flex-col overflow-hidden">
+                    <div class="p-5 border-b border-white/5 bg-white/[0.02] flex items-center justify-between">
+                        <h2 class="text-sm font-semibold text-gray-300 uppercase tracking-wider flex items-center gap-2">
+                            <svg class="w-4 h-4 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                            Live Manifest
+                        </h2>
+                        <button onclick="generatePDF()" class="px-4 py-2 bg-gray-100 hover:bg-white text-gray-900 rounded-md text-xs font-bold tracking-wide transition flex items-center gap-2 shadow-lg">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                            EXPORT PDF
+                        </button>
                     </div>
-                    <div>
-                        <label class="block text-[10px] font-tactical text-slate-400 mb-1">UNIT_ID</label>
-                        <input type="number" id="boxNumber" value="1" class="w-full p-2 text-center font-bold text-amber-500 text-lg">
-                    </div>
-                    <div>
-                        <label class="block text-[10px] font-tactical text-slate-400 mb-1">OPERATOR</label>
-                        <input type="text" id="boxOwner" placeholder="e.g. Elad" class="w-full p-2 text-sm">
+                    
+                    <div id="previewArea" class="flex-grow overflow-y-auto p-6 space-y-6">
+                        <!-- Empty State -->
+                        <div class="h-full flex flex-col items-center justify-center text-gray-600 space-y-4">
+                            <div class="w-16 h-16 rounded-full bg-gray-800/50 flex items-center justify-center border border-gray-700/50">
+                                <svg class="w-8 h-8 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"></path></svg>
+                            </div>
+                            <p class="text-sm tracking-wide">NO CONTAINERS CONFIGURED</p>
+                        </div>
                     </div>
                 </div>
-
-                <div class="mb-4">
-                    <label class="block text-[10px] font-tactical text-slate-400 mb-2">AVAILABLE_ASSETS</label>
-                    <!-- רשימת הציוד עברה שדרוג צבעים -->
-                    <div id="equipmentList" class="grid grid-cols-1 gap-2 h-72 overflow-y-auto bg-slate-950/80 p-3 border border-slate-700/50 mb-4">
-                        <!-- פריטים יוזרקו לכאן -->
-                    </div>
-                </div>
-
-                <div class="flex items-center space-x-2 space-x-reverse mb-6">
-                    <input type="text" id="customItemInput" placeholder="> Input custom asset..." class="flex-grow border-none text-xs p-2 bg-slate-950 text-cyan-300 placeholder-slate-600 focus:ring-1 focus:ring-cyan-500" dir="ltr">
-                    <button onclick="addCustomItem()" class="bg-slate-800 hover:bg-cyan-700 border border-slate-600 hover:border-cyan-400 text-slate-300 hover:text-white text-[10px] font-tactical py-2 px-3 transition flex items-center tracking-wider">
-                        [ ADD_ASSET ]
-                    </button>
-                </div>
-
-                <button onclick="addContainer()" class="w-full bg-amber-600 hover:bg-amber-500 text-slate-900 font-black font-tactical text-lg py-3 px-4 transition shadow-[0_0_15px_rgba(245,158,11,0.2)] hover:shadow-[0_0_25px_rgba(245,158,11,0.6)] uppercase tracking-[0.2em] relative overflow-hidden group">
-                    <span class="relative z-10">COMMIT_TO_MANIFEST</span>
-                    <div class="absolute top-0 -left-full w-1/2 h-full bg-gradient-to-r from-transparent via-white to-transparent opacity-30 group-hover:animate-[shimmer_1.5s_infinite]"></div>
-                </button>
             </div>
         </div>
+    </main>
 
-        <!-- צד שמאל: תצוגה מקדימה וייצוא -->
-        <div class="tactical-panel p-6 rounded-sm flex flex-col relative overflow-hidden">
-            <!-- מכ"ם רשת בצד שמאל למטה -->
-            <div class="absolute bottom-[-50px] left-[-50px] opacity-[0.03] pointer-events-none">
-                <svg width="300" height="300" viewBox="0 0 100 100">
-                    <circle cx="50" cy="50" r="40" stroke="white" stroke-width="0.5" fill="none"/>
-                    <circle cx="50" cy="50" r="30" stroke="white" stroke-width="0.5" fill="none"/>
-                    <circle cx="50" cy="50" r="20" stroke="white" stroke-width="0.5" fill="none"/>
-                    <line x1="50" y1="10" x2="50" y2="90" stroke="white" stroke-width="0.5"/>
-                    <line x1="10" y1="50" x2="90" y2="50" stroke="white" stroke-width="0.5"/>
-                </svg>
-            </div>
-
-            <div class="flex justify-between items-center mb-6 border-b border-cyan-800/50 pb-3 relative z-10">
-                <div class="flex items-center space-x-2 space-x-reverse">
-                    <svg class="w-5 h-5 text-amber-500 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
-                    <h2 class="text-lg font-bold text-amber-500 font-tactical tracking-widest uppercase">[ LIVE_PREVIEW ]</h2>
-                </div>
-                <button onclick="generatePDF()" class="bg-cyan-900/50 hover:bg-cyan-600 border border-cyan-500 text-cyan-300 hover:text-slate-900 font-tactical font-bold py-2 px-5 transition flex items-center shadow-[0_0_10px_rgba(6,182,212,0.3)] hover:shadow-[0_0_20px_rgba(6,182,212,0.8)] group text-sm tracking-wider">
-                    <svg class="w-4 h-4 ml-2 group-hover:translate-y-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
-                    GENERATE_REPORT.PDF
-                </button>
-            </div>
-            
-            <div id="previewArea" class="flex-grow overflow-y-auto bg-slate-950/90 p-5 border border-slate-700/50 text-left font-mono relative z-10 h-[600px] shadow-inner" dir="ltr">
-                <div class="flex flex-col items-center justify-center h-full text-slate-600">
-                    <svg class="w-16 h-16 mb-4 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 002-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
-                    <p class="text-xs font-tactical tracking-[0.2em] uppercase glow-cyan opacity-50">NO_ASSETS_DETECTED</p>
-                </div>
-            </div>
-        </div>
-
-    </div>
-
-    <!-- התבנית המוסתרת ל-PDF (נשארת נקייה וברורה להדפסה) -->
+    <!-- Hidden PDF Template (Kept clean for printing) -->
     <div id="pdf-content">
         <h1>TACTICAL EQUIPMENT MANIFEST</h1>
-        <p><strong>Destination:</strong> <span id="pdf-dest"></span><br>
-        <strong>Dates:</strong> <span id="pdf-dates"></span></p>
-        <hr style="border-top: 1px solid #cbd5e1; margin-bottom: 20px;">
+        <div class="meta-info">
+            <strong>DESTINATION:</strong> <span id="pdf-dest"></span><br>
+            <strong>OPERATION DATES:</strong> <span id="pdf-dates"></span>
+        </div>
         <div id="pdf-containers"></div>
         <div id="pdf-carnet-section"></div>
     </div>
 
     <script>
-        // הפעלת שעון דיגיטלי בראש העמוד
-        setInterval(() => {
-            const now = new Date();
-            document.getElementById('digital-clock').innerText = now.toISOString().substring(11,19) + " ZULU";
-        }, 1000);
-
         const masterEquipment = [
             "BNET HCLOS",
             "Power Supply",
@@ -330,7 +325,8 @@
         let snOptionsHTML = '';
 
         window.onload = () => {
-            qtyOptionsHTML = '<option value="">QTY</option>';
+            // Generate dropdown options
+            qtyOptionsHTML = '<option value="">Qty</option>';
             for(let i=1; i<=30; i++) {
                 qtyOptionsHTML += `<option value="${i}">${i}</option>`;
             }
@@ -341,12 +337,13 @@
                 snOptionsHTML += `<option value="${num}">${num}</option>`;
             }
 
+            // Populate list
             masterEquipment.forEach((item, index) => {
                 appendItemToDOM(item, index);
             });
         };
 
-        // טיפול בהעלאת תמונות
+        // Handle Images
         document.getElementById('carnetImages').addEventListener('change', function(event) {
             const files = event.target.files;
             for(let file of files) {
@@ -364,9 +361,9 @@
             container.innerHTML = '';
             uploadedImages.forEach((imgSrc, index) => {
                 container.innerHTML += `
-                    <div class="relative w-16 h-16 border border-cyan-600 rounded-sm overflow-hidden group">
-                        <img src="${imgSrc}" class="object-cover w-full h-full opacity-60 group-hover:opacity-100 transition filter contrast-125 sepia-[0.3] hue-rotate-[180deg]">
-                        <button onclick="removeImage(${index})" class="absolute top-0 right-0 bg-red-600/90 text-white text-[10px] w-4 h-4 flex items-center justify-center font-bold hover:bg-red-500 font-tactical">X</button>
+                    <div class="relative w-16 h-16 rounded-md overflow-hidden border border-gray-600 group">
+                        <img src="${imgSrc}" class="object-cover w-full h-full opacity-80 group-hover:opacity-100 transition duration-300">
+                        <button onclick="removeImage(${index})" class="absolute top-1 right-1 bg-red-500 text-white w-4 h-4 rounded-full flex items-center justify-center text-[10px] font-bold opacity-0 group-hover:opacity-100 transition shadow">✕</button>
                     </div>
                 `;
             });
@@ -378,19 +375,24 @@
             document.getElementById('carnetImages').value = '';
         }
 
+        // Add item to DOM with New Sleek Design
         function appendItemToDOM(itemName, index) {
             const listDiv = document.getElementById('equipmentList');
             const id = `item-${index}`;
             const itemHTML = `
-                <div class="flex items-center space-x-2 space-x-reverse border-b border-slate-700/50 pb-2 mb-1 hover:bg-cyan-900/20 p-1 transition-colors">
-                    <input type="checkbox" id="${id}_check" value="${itemName}" class="w-4 h-4 rounded-sm bg-slate-900 border-cyan-700 focus:ring-amber-500">
-                    <label for="${id}_check" class="text-[13px] text-slate-300 flex-grow cursor-pointer" dir="ltr">${itemName}</label>
-                    <select id="${id}_qty" class="w-14 text-[10px] text-center" dir="ltr">
-                        ${qtyOptionsHTML}
-                    </select>
-                    <select id="${id}_sn" class="w-14 text-[10px] text-center" dir="ltr">
-                        ${snOptionsHTML}
-                    </select>
+                <div class="item-row flex items-center justify-between p-3 rounded-lg border border-white/5 bg-gray-800/30">
+                    <div class="flex items-center gap-3 flex-grow">
+                        <input type="checkbox" id="${id}_check" value="${itemName}" class="custom-checkbox">
+                        <label for="${id}_check" class="text-sm text-gray-200 cursor-pointer font-medium select-none w-full">${itemName}</label>
+                    </div>
+                    <div class="flex items-center gap-2 ml-4">
+                        <select id="${id}_qty" class="w-16 py-1 px-2 h-8 text-xs font-mono-data text-center">
+                            ${qtyOptionsHTML}
+                        </select>
+                        <select id="${id}_sn" class="w-16 py-1 px-2 h-8 text-xs font-mono-data text-center">
+                            ${snOptionsHTML}
+                        </select>
+                    </div>
                 </div>
             `;
             listDiv.insertAdjacentHTML('beforeend', itemHTML);
@@ -401,7 +403,7 @@
             const newItemName = inputEl.value.trim();
             
             if (!newItemName) {
-                alert("ACCESS DENIED: Item name missing.");
+                alert("Please enter an item name.");
                 return;
             }
 
@@ -438,15 +440,16 @@
             });
 
             if (selectedItems.length === 0) {
-                alert("SYS_ERROR: Container empty. Select assets.");
+                alert("Container is empty. Please select at least one item.");
                 return;
             }
 
             containersData.push({
-                title: `${boxType.toUpperCase()} ${boxNumber}` + (boxOwner ? ` // OP: ${boxOwner.toUpperCase()}` : ''),
+                title: `${boxType} ${boxNumber}` + (boxOwner ? ` (Owner: ${boxOwner})` : ''),
                 items: selectedItems
             });
 
+            // Reset Form for next container
             document.getElementById('boxNumber').value = parseInt(boxNumber) + 1;
             masterEquipment.forEach((_, index) => {
                 const checkEl = document.getElementById(`item-${index}_check`);
@@ -464,7 +467,7 @@
             const previewArea = document.getElementById('previewArea');
             const pdfContainers = document.getElementById('pdf-containers');
             
-            if (containersData.length > 0 && previewArea.innerHTML.includes('NO_ASSETS_DETECTED')) {
+            if (containersData.length > 0 && previewArea.innerHTML.includes('NO CONTAINERS CONFIGURED')) {
                 previewArea.innerHTML = ''; 
             }
             
@@ -472,23 +475,27 @@
             pdfContainers.innerHTML = '';
 
             containersData.forEach(container => {
+                // UI Preview Update
                 const containerHTML = `
-                    <div class="mb-5 bg-slate-900/60 p-3 border-l-2 border-amber-500 shadow-[inset_0_0_10px_rgba(0,0,0,0.5)]">
-                        <h2 class="font-bold text-amber-500 text-sm mb-2 flex items-center font-tactical tracking-wider">
-                            <span class="bg-amber-500 text-slate-900 px-1 py-0 rounded-sm mr-2 text-[10px]">LOCKED</span>
-                            [ ${container.title} ]
-                        </h2>
-                        <ul class="list-none space-y-1 text-cyan-100 text-[13px] font-sans">
-                            ${container.items.map(item => `
-                                <li class="flex items-start">
-                                    <span class="text-cyan-600 mr-2 mt-0">›</span>
-                                    <span>${item}</span>
-                                </li>`).join('')}
-                        </ul>
+                    <div class="bg-gray-800/40 rounded-lg border border-gray-700/50 overflow-hidden">
+                        <div class="bg-gray-800/80 px-4 py-2.5 border-b border-gray-700/50 flex items-center gap-2">
+                            <div class="w-1.5 h-4 bg-emerald-500 rounded-sm"></div>
+                            <h2 class="font-semibold text-gray-200 text-sm tracking-wide">${container.title}</h2>
+                        </div>
+                        <div class="p-4">
+                            <ul class="space-y-2">
+                                ${container.items.map(item => `
+                                    <li class="flex items-start gap-2 text-sm text-gray-300">
+                                        <svg class="w-4 h-4 text-gray-500 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                                        <span>${item}</span>
+                                    </li>`).join('')}
+                            </ul>
+                        </div>
                     </div>
                 `;
                 previewArea.innerHTML += containerHTML;
                 
+                // Hidden PDF DOM Update
                 const pdfSection = document.createElement('div');
                 pdfSection.innerHTML = `<h2>${container.title}</h2><ul>${container.items.map(item => `<li>${item}</li>`).join('')}</ul>`;
                 pdfContainers.appendChild(pdfSection);
@@ -497,21 +504,22 @@
 
         function generatePDF() {
             if(containersData.length === 0) {
-                alert("SYS_ERROR: No data to compile.");
+                alert("No containers to export.");
                 return;
             }
 
-            document.getElementById('pdf-dest').innerText = document.getElementById('destination').value || 'CLASSIFIED';
+            document.getElementById('pdf-dest').innerText = document.getElementById('destination').value || 'TBD';
             document.getElementById('pdf-dates').innerText = document.getElementById('dates').value || 'TBD';
 
+            // Add Images to PDF
             const pdfCarnetSection = document.getElementById('pdf-carnet-section');
             pdfCarnetSection.innerHTML = '';
             if (uploadedImages.length > 0) {
-                pdfCarnetSection.innerHTML = '<h1 style="page-break-before: always; margin-top: 20px;">ATA CARNET / DOCUMENTS</h1>';
+                pdfCarnetSection.innerHTML = '<h1 style="page-break-before: always; margin-top: 20px;">DOCUMENTS / ATA CARNET</h1>';
                 uploadedImages.forEach(imgSrc => {
                     pdfCarnetSection.innerHTML += `
-                        <div style="text-align: center; margin-bottom: 30px;">
-                            <img src="${imgSrc}" style="max-width: 100%; max-height: 900px; border: 2px solid #1e293b; border-radius: 4px;">
+                        <div style="text-align: center; margin-bottom: 40px;">
+                            <img src="${imgSrc}" style="max-width: 100%; max-height: 900px; border: 1px solid #E5E7EB; border-radius: 4px;">
                         </div>
                     `;
                 });
