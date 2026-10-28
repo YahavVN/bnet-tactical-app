@@ -1,498 +1,481 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <meta http-equiv="Content-Style-Type" content="text/css">
-  <title></title>
-  <meta name="Generator" content="Cocoa HTML Writer">
-  <meta name="CocoaVersion" content="2775.2">
-  <style type="text/css">
-    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Times; -webkit-text-stroke: #000000}
-    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Times; -webkit-text-stroke: #000000; min-height: 14.0px}
-    span.s1 {font-kerning: none}
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BNET Tactical Equipment Manager</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- HTML2PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    
+    <style>
+        body {
+            background-color: #0f172a; 
+            background-image: 
+                radial-gradient(circle at top right, #1e293b 0%, transparent 40%),
+                radial-gradient(circle at bottom left, #0f172a 0%, #020617 100%),
+                url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23fbbf24' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            color: #e2e8f0;
+        }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0f172a; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; border: 1px solid #1e293b; }
+        ::-webkit-scrollbar-thumb:hover { background: #f59e0b; }
+
+        input[type="checkbox"] {
+            accent-color: #f59e0b;
+            cursor: pointer;
+        }
+
+        select, input[type="text"], input[type="number"] {
+            background-color: #1e293b;
+            color: #f8fafc;
+            border: 1px solid #475569;
+            transition: all 0.2s ease;
+        }
+        select:focus, input:focus {
+            outline: none;
+            border-color: #f59e0b;
+            box-shadow: 0 0 8px rgba(245, 158, 11, 0.4);
+        }
+
+        /* עיצוב ה-PDF הרשמי להדפסה */
+        #pdf-content {
+            font-family: 'Arial', sans-serif;
+            color: #1e293b;
+            direction: ltr;
+            padding: 40px;
+            background-color: white;
+            display: none;
+        }
+        
+        #pdf-content h1 {
+            color: #0f172a;
+            font-size: 24px;
+            font-weight: 900;
+            border-bottom: 4px solid #1e293b;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        #pdf-content h2 {
+            color: #1e293b;
+            font-size: 16px;
+            font-weight: bold;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            background-color: #f1f5f9;
+            padding: 6px 10px;
+            border-left: 4px solid #f59e0b;
+        }
+
+        #pdf-content ul {
+            list-style-type: none;
+            padding-left: 20px;
+        }
+
+        #pdf-content ul li {
+            margin-bottom: 6px;
+            position: relative;
+            font-size: 14px;
+        }
+
+        #pdf-content ul li:before {
+            content: "■";
+            color: #64748b;
+            font-size: 10px;
+            position: absolute;
+            left: -15px;
+            top: 3px;
+        }
+    </style>
 </head>
-<body>
-<p class="p1"><span class="s1">&lt;!DOCTYPE html&gt;</span></p>
-<p class="p1"><span class="s1">&lt;html lang="he" dir="rtl"&gt;</span></p>
-<p class="p1"><span class="s1">&lt;head&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;meta charset="UTF-8"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;title&gt;BNET Tactical Equipment Manager&lt;/title&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;!-- Tailwind CSS --&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;script src="https://cdn.tailwindcss.com"&gt;&lt;/script&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;!-- HTML2PDF --&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"&gt;&lt;/script&gt;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;style&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>body {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>background-color: #0f172a;<span class="Apple-converted-space"> </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>background-image:<span class="Apple-converted-space"> </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>radial-gradient(circle at top right, #1e293b 0%, transparent 40%),</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>radial-gradient(circle at bottom left, #0f172a 0%, #020617 100%),</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23fbbf24' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>color: #e2e8f0;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>::-webkit-scrollbar { width: 8px; }</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>::-webkit-scrollbar-track { background: #0f172a; border-radius: 4px; }</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; border: 1px solid #1e293b; }</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>::-webkit-scrollbar-thumb:hover { background: #f59e0b; }</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>input[type="checkbox"] {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>accent-color: #f59e0b;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>cursor: pointer;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>select, input[type="text"], input[type="number"] {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>background-color: #1e293b;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>color: #f8fafc;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>border: 1px solid #475569;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>transition: all 0.2s ease;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>select:focus, input:focus {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>outline: none;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>border-color: #f59e0b;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>box-shadow: 0 0 8px rgba(245, 158, 11, 0.4);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>/* עיצוב ה-PDF הרשמי להדפסה */</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>#pdf-content {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>font-family: 'Arial', sans-serif;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>color: #1e293b;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>direction: ltr;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>padding: 40px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>background-color: white;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>display: none;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>#pdf-content h1 {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>color: #0f172a;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>font-size: 24px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>font-weight: 900;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>border-bottom: 4px solid #1e293b;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>padding-bottom: 10px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>margin-bottom: 20px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>text-transform: uppercase;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>letter-spacing: 1px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>#pdf-content h2 {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>color: #1e293b;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>font-size: 16px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>font-weight: bold;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>margin-top: 20px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>margin-bottom: 10px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>background-color: #f1f5f9;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>padding: 6px 10px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>border-left: 4px solid #f59e0b;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>#pdf-content ul {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>list-style-type: none;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>padding-left: 20px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>#pdf-content ul li {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>margin-bottom: 6px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>position: relative;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>font-size: 14px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>#pdf-content ul li:before {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>content: "■";</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>color: #64748b;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>font-size: 10px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>position: absolute;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>left: -15px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>top: 3px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/style&gt;</span></p>
-<p class="p1"><span class="s1">&lt;/head&gt;</span></p>
-<p class="p1"><span class="s1">&lt;body class="font-sans min-h-screen pb-10"&gt;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;header class="bg-slate-900/80 border-b border-slate-700 shadow-lg backdrop-blur-md sticky top-0 z-50"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div class="flex items-center space-x-4 space-x-reverse"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;svg class="w-10 h-10 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"&gt;&lt;/path&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/svg&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;h1 class="text-2xl font-black tracking-wider text-white"&gt;BNET &lt;span class="text-amber-500"&gt;TACTICAL MANIFEST&lt;/span&gt;&lt;/h1&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;p class="text-xs text-slate-400 font-mono tracking-widest"&gt;ADVANCED MANET LOGISTICS O.S.&lt;/p&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div class="hidden md:flex text-slate-500 font-mono text-xs items-center space-x-2 space-x-reverse"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;span class="inline-block w-2 h-2 rounded-full bg-emerald-500 animate-pulse"&gt;&lt;/span&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;span&gt;SYSTEM ONLINE&lt;/span&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/header&gt;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div class="max-w-7xl mx-auto py-8 px-4 grid grid-cols-1 lg:grid-cols-2 gap-8"&gt;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;!-- צד ימין: טופס הזנה --&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="bg-slate-800/90 p-6 rounded-xl shadow-[0_0_20px_rgba(0,0,0,0.5)] border border-slate-700 backdrop-blur-sm"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div class="flex items-center space-x-2 space-x-reverse mb-6 border-b border-slate-600 pb-3"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;svg class="w-6 h-6 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2"&gt;&lt;/path&gt;&lt;/svg&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;h2 class="text-xl font-bold text-amber-500 uppercase tracking-wide"&gt;Mission Details &amp; Docs&lt;/h2&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;!-- פרטי נסיעה ומסמכים --&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div class="grid grid-cols-2 gap-4 mb-4"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;label class="block text-xs font-mono text-slate-400 mb-1"&gt;DESTINATION (מדינה/יעד)&lt;/label&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;input type="text" id="destination" placeholder="e.g. Denmark" class="w-full p-2 rounded"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;label class="block text-xs font-mono text-slate-400 mb-1"&gt;DATES (תאריכים)&lt;/label&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;input type="text" id="dates" placeholder="e.g. Oct 4-11, 2026" class="w-full p-2 rounded"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;!-- העלאת תמונות קרנה --&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div class="mb-6 bg-slate-900/50 p-3 rounded border border-slate-700"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;label class="block text-xs font-mono text-slate-400 mb-2"&gt;ATTACH CARNET IMAGES (העלאת קרנה)&lt;/label&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;input type="file" id="carnetImages" accept="image/*" multiple class="block w-full text-sm text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-xs file:font-bold file:bg-amber-600 file:text-slate-900 hover:file:bg-amber-500 cursor-pointer"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;div id="imagePreviewContainer" class="flex flex-wrap gap-2 mt-3 empty:hidden"&gt;&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;!-- יצירת מארז חדש --&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div class="bg-slate-900/50 p-5 rounded-lg border border-slate-700 shadow-inner mb-6 relative overflow-hidden"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;div class="absolute top-0 right-0 w-16 h-16 bg-amber-500/10 rounded-bl-full pointer-events-none"&gt;&lt;/div&gt;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;h3 class="font-bold text-lg mb-4 text-white"&gt;CONTAINER BUILDER&lt;/h3&gt;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;div class="grid grid-cols-3 gap-4 mb-5"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;label class="block text-xs font-mono text-slate-400 mb-1"&gt;TYPE&lt;/label&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;select id="boxType" class="w-full p-2 rounded font-medium"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;option value="Pelican"&gt;Pelican&lt;/option&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;option value="Ski Bag"&gt;Ski Bag&lt;/option&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;/select&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;label class="block text-xs font-mono text-slate-400 mb-1"&gt;NUMBER&lt;/label&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;input type="number" id="boxNumber" value="1" class="w-full p-2 rounded text-center font-bold text-amber-500"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;label class="block text-xs font-mono text-slate-400 mb-1"&gt;OWNER&lt;/label&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;input type="text" id="boxOwner" placeholder="e.g. Elad" class="w-full p-2 rounded"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;div class="mb-3"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;label class="block text-xs font-mono text-slate-400 mb-2"&gt;EQUIPMENT SELECTOR&lt;/label&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;div id="equipmentList" class="grid grid-cols-1 gap-2 h-72 overflow-y-auto bg-slate-800 p-3 border border-slate-700 rounded shadow-inner mb-4"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;!-- פריטים יוזרקו לכאן מ-JS --&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;!-- הוספת פריט חדש ידנית --&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;div class="flex items-center space-x-2 space-x-reverse mb-6 bg-slate-800 p-1 border rounded border-slate-600 focus-within:border-amber-500 transition-colors"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;input type="text" id="customItemInput" placeholder="Add custom item to database..." class="flex-grow border-none focus:ring-0 text-sm p-2 bg-transparent text-white placeholder-slate-500" dir="ltr"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;button onclick="addCustomItem()" class="bg-slate-700 hover:bg-amber-600 text-slate-300 hover:text-white text-xs font-bold py-2 px-4 rounded transition flex items-center"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"&gt;&lt;/path&gt;&lt;/svg&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>ADD</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/button&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;button onclick="addContainer()" class="w-full bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-500 hover:to-amber-400 text-slate-900 font-extrabold py-3 px-4 rounded transition shadow-[0_0_15px_rgba(245,158,11,0.3)] hover:shadow-[0_0_20px_rgba(245,158,11,0.5)] transform hover:-translate-y-0.5 uppercase tracking-wide"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>Commit Container to Manifest</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/button&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;!-- צד שמאל: תצוגה מקדימה וייצוא --&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="bg-slate-800/90 p-6 rounded-xl shadow-[0_0_20px_rgba(0,0,0,0.5)] border border-slate-700 backdrop-blur-sm flex flex-col relative overflow-hidden"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div class="absolute bottom-0 left-0 opacity-5 pointer-events-none"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;svg width="200" height="200" viewBox="0 0 24 24" fill="white"&gt;&lt;path d="M12 2L2 22h20L12 2zm0 4.5l7 14H5l7-14z"/&gt;&lt;/svg&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div class="flex justify-between items-center mb-6 border-b border-slate-600 pb-3 relative z-10"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;div class="flex items-center space-x-2 space-x-reverse"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;svg class="w-6 h-6 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"&gt;&lt;/path&gt;&lt;/svg&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;h2 class="text-xl font-bold text-amber-500 uppercase tracking-wide"&gt;Live Manifest Preview&lt;/h2&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;button onclick="generatePDF()" class="bg-slate-700 hover:bg-emerald-600 border border-emerald-600/50 hover:border-emerald-500 text-emerald-400 hover:text-white font-bold py-2 px-5 rounded transition flex items-center shadow-lg group"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;svg class="w-5 h-5 ml-2 group-hover:animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"&gt;&lt;/path&gt;&lt;/svg&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>EXPORT PDF</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/button&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div id="previewArea" class="flex-grow overflow-y-auto bg-slate-900/80 p-5 rounded border border-slate-700 text-left font-mono relative z-10 h-[600px]" dir="ltr"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;div class="flex flex-col items-center justify-center h-full text-slate-500 opacity-70"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;svg class="w-16 h-16 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"&gt;&lt;/path&gt;&lt;/svg&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;p class="text-sm"&gt;NO CONTAINERS LOADED YET...&lt;/p&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;!-- התבנית המוסתרת ל-PDF --&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div id="pdf-content"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;h1&gt;TACTICAL EQUIPMENT MANIFEST&lt;/h1&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;p&gt;&lt;strong&gt;Destination:&lt;/strong&gt; &lt;span id="pdf-dest"&gt;&lt;/span&gt;&lt;br&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;strong&gt;Dates:&lt;/strong&gt; &lt;span id="pdf-dates"&gt;&lt;/span&gt;&lt;/p&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;hr style="border-top: 1px solid #cbd5e1; margin-bottom: 20px;"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div id="pdf-containers"&gt;&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div id="pdf-carnet-section"&gt;&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;script&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const masterEquipment = [</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>"BNET HCLOS",</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>"Power Supply",</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>"Cable Set (RF + J9 + J10 + J11)",</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>"Accessories (Mouse, Camera, Charger)",</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>"ISR to EUR Power Adapter",</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>"Speaker + Microphone",</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>"RF Box Single",</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>"Variable Attenuator",</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>"Power Splitter",</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>"RF Cable (5m)",</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>"North Finder GNSS + GPS Cables",</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>"RF Adapter Toolbox",</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>"Screws Toolbox",</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>"Pedestal 42",</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>"Pedestal 43",</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>"Quickset Adapter",</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>"Mechanic Adapter",</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>"Gibraltar Tripod Adapter",</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>"Pedestal Power Cable",</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>"Chapman",</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>"Harris Sector Antenna",</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>"Small Tripod",</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>"Spare Cables",</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>"MTI Antennas",</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>"Omni Antennas",</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>"Black Omni Mount",</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>"Car Mount",</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>"Hercules Tripod",</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>"Caracal Mechanic Mount",</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>"Mechanic Tube",</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>"Base Weldment",</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>"BNET Holder Weldment",</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>"Clamp Weldment",</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>"Mechanic Screws",</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>"Laptop",</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>"BNET Brochures / Flyers"</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>];</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>let containersData = [];</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>let uploadedImages = [];</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>let qtyOptionsHTML = '';</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>let snOptionsHTML = '';</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>window.onload = () =&gt; {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>qtyOptionsHTML = '&lt;option value=""&gt;Qty&lt;/option&gt;';</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>for(let i=1; i&lt;=30; i++) {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>qtyOptionsHTML += `&lt;option value="${i}"&gt;${i}&lt;/option&gt;`;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>snOptionsHTML = '&lt;option value=""&gt;SN&lt;/option&gt;';</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>for(let i=0; i&lt;=100; i++) {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>let num = i &lt; 10 ? '0' + i : i;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>snOptionsHTML += `&lt;option value="${num}"&gt;${num}&lt;/option&gt;`;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>masterEquipment.forEach((item, index) =&gt; {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>appendItemToDOM(item, index);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>});</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>};</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>// טיפול בהעלאת תמונות</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>document.getElementById('carnetImages').addEventListener('change', function(event) {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const files = event.target.files;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>for(let file of files) {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>const reader = new FileReader();</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>reader.onload = function(e) {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>uploadedImages.push(e.target.result);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>updateImagePreview();</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>reader.readAsDataURL(file);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>});</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>function updateImagePreview() {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const container = document.getElementById('imagePreviewContainer');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>container.innerHTML = '';</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>uploadedImages.forEach((imgSrc, index) =&gt; {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>container.innerHTML += `</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;div class="relative w-16 h-16 border border-slate-600 rounded overflow-hidden group"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;img src="${imgSrc}" class="object-cover w-full h-full opacity-80 group-hover:opacity-100 transition"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;button onclick="removeImage(${index})" class="absolute top-0 right-0 bg-red-600/90 text-white text-[10px] w-4 h-4 flex items-center justify-center font-bold hover:bg-red-500"&gt;X&lt;/button&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>`;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>});</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>function removeImage(index) {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>uploadedImages.splice(index, 1);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>updateImagePreview();</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>// איפוס ה-input כדי שאפשר יהיה להעלות את אותו קובץ שוב אם נמחק בטעות</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>document.getElementById('carnetImages').value = '';</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>function appendItemToDOM(itemName, index) {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const listDiv = document.getElementById('equipmentList');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const id = `item-${index}`;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const itemHTML = `</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;div class="flex items-center space-x-2 space-x-reverse border-b border-slate-700/50 pb-2 mb-1 hover:bg-slate-700/30 p-1 rounded transition-colors"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;input type="checkbox" id="${id}_check" value="${itemName}" class="w-5 h-5 rounded bg-slate-800 border-slate-600 focus:ring-amber-500 focus:ring-opacity-50"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;label for="${id}_check" class="text-sm font-medium text-slate-300 flex-grow cursor-pointer" dir="ltr"&gt;${itemName}&lt;/label&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;select id="${id}_qty" class="w-16 text-xs text-center" dir="ltr"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>${qtyOptionsHTML}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/select&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;select id="${id}_sn" class="w-16 text-xs text-center" dir="ltr"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>${snOptionsHTML}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/select&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>`;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>listDiv.insertAdjacentHTML('beforeend', itemHTML);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>function addCustomItem() {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const inputEl = document.getElementById('customItemInput');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const newItemName = inputEl.value.trim();</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>if (!newItemName) {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>alert("Please type an item name first.");</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>return;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>masterEquipment.push(newItemName);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const newIndex = masterEquipment.length - 1;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>appendItemToDOM(newItemName, newIndex);</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const listDiv = document.getElementById('equipmentList');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>listDiv.scrollTop = listDiv.scrollHeight;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>inputEl.value = '';</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>function addContainer() {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const boxType = document.getElementById('boxType').value;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const boxNumber = document.getElementById('boxNumber').value;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const boxOwner = document.getElementById('boxOwner').value;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>let selectedItems = [];</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>masterEquipment.forEach((item, index) =&gt; {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>const checkEl = document.getElementById(`item-${index}_check`);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>if(checkEl &amp;&amp; checkEl.checked) {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>const qty = document.getElementById(`item-${index}_qty`).value;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>const sn = document.getElementById(`item-${index}_sn`).value;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                    </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>let finalString = item;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                    </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>if (qty) finalString = `${qty}x ${finalString}`;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>if (sn) finalString = `${finalString} (SN: ${sn})`;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                    </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>selectedItems.push(finalString);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>});</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>if (selectedItems.length === 0) {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>alert("System Error: Container is empty. Please select at least one item.");</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>return;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>containersData.push({</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>title: `${boxType} ${boxNumber}` + (boxOwner ? ` - ${boxOwner}` : ''),</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>items: selectedItems</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>});</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>document.getElementById('boxNumber').value = parseInt(boxNumber) + 1;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>masterEquipment.forEach((_, index) =&gt; {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>const checkEl = document.getElementById(`item-${index}_check`);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>if(checkEl) {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>checkEl.checked = false;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>document.getElementById(`item-${index}_qty`).value = '';</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>document.getElementById(`item-${index}_sn`).value = '';</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>});</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>updatePreview();</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>function updatePreview() {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const previewArea = document.getElementById('previewArea');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const pdfContainers = document.getElementById('pdf-containers');</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>if (containersData.length &gt; 0 &amp;&amp; previewArea.innerHTML.includes('NO CONTAINERS LOADED')) {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>previewArea.innerHTML = '';<span class="Apple-converted-space"> </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>}</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>previewArea.innerHTML = '';</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>pdfContainers.innerHTML = '';</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>containersData.forEach(container =&gt; {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>const containerHTML = `</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;div class="mb-5 bg-slate-800/80 p-3 rounded-lg border border-slate-700 shadow"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;h2 class="font-bold text-amber-500 text-md mb-2 flex items-center"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;span class="bg-amber-500 text-slate-900 px-2 py-0.5 rounded-sm mr-2 text-xs"&gt;BOX&lt;/span&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>${container.title}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;/h2&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;ul class="list-none space-y-1 text-slate-300 text-sm"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>${container.items.map(item =&gt; `</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>&lt;li class="flex items-start"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                    </span>&lt;span class="text-amber-500 mr-2 mt-0.5"&gt;▸&lt;/span&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                    </span>&lt;span&gt;${item}&lt;/span&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>&lt;/li&gt;`).join('')}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;/ul&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>`;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>previewArea.innerHTML += containerHTML;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>const pdfSection = document.createElement('div');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>pdfSection.innerHTML = `&lt;h2&gt;${container.title}&lt;/h2&gt;&lt;ul&gt;${container.items.map(item =&gt; `&lt;li&gt;${item}&lt;/li&gt;`).join('')}&lt;/ul&gt;`;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>pdfContainers.appendChild(pdfSection);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>});</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>function generatePDF() {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>if(containersData.length === 0) {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>alert("System Error: No containers to export.");</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>return;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>document.getElementById('pdf-dest').innerText = document.getElementById('destination').value || 'TBD';</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>document.getElementById('pdf-dates').innerText = document.getElementById('dates').value || 'TBD';</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>// הוספת תמונות הקרנה ל-PDF אם ישנן</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const pdfCarnetSection = document.getElementById('pdf-carnet-section');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>pdfCarnetSection.innerHTML = '';</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>if (uploadedImages.length &gt; 0) {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>// page-break-before: always - מבטיח שהתמונות יתחילו בעמוד חדש ונקי</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>pdfCarnetSection.innerHTML = '&lt;h1 style="page-break-before: always; margin-top: 20px;"&gt;ATA CARNET / DOCUMENTS&lt;/h1&gt;';</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>uploadedImages.forEach(imgSrc =&gt; {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>pdfCarnetSection.innerHTML += `</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;div style="text-align: center; margin-bottom: 30px;"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;img src="${imgSrc}" style="max-width: 100%; max-height: 900px; border: 2px solid #1e293b; border-radius: 4px;"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>`;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>});</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const element = document.getElementById('pdf-content');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>element.style.display = 'block';</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const opt = {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>margin: <span class="Apple-converted-space">      </span>15,</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>filename: <span class="Apple-converted-space">    </span>'BNET_Tactical_Manifest.pdf',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>image:<span class="Apple-converted-space">        </span>{ type: 'jpeg', quality: 0.98 },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>html2canvas:<span class="Apple-converted-space">  </span>{ scale: 2 },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>jsPDF:<span class="Apple-converted-space">        </span>{ unit: 'mm', format: 'a4', orientation: 'portrait' }</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>};</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>html2pdf().set(opt).from(element).save().then(() =&gt; {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>element.style.display = 'none';</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>});</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/script&gt;</span></p>
-<p class="p1"><span class="s1">&lt;/body&gt;</span></p>
-<p class="p1"><span class="s1">&lt;/html&gt;</span></p>
+<body class="font-sans min-h-screen pb-10">
+
+    <header class="bg-slate-900/80 border-b border-slate-700 shadow-lg backdrop-blur-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
+            <div class="flex items-center space-x-4 space-x-reverse">
+                <svg class="w-10 h-10 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                </svg>
+                <div>
+                    <h1 class="text-2xl font-black tracking-wider text-white">BNET <span class="text-amber-500">TACTICAL MANIFEST</span></h1>
+                    <p class="text-xs text-slate-400 font-mono tracking-widest">ADVANCED MANET LOGISTICS O.S.</p>
+                </div>
+            </div>
+            <div class="hidden md:flex text-slate-500 font-mono text-xs items-center space-x-2 space-x-reverse">
+                <span class="inline-block w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                <span>SYSTEM ONLINE</span>
+            </div>
+        </div>
+    </header>
+
+    <div class="max-w-7xl mx-auto py-8 px-4 grid grid-cols-1 lg:grid-cols-2 gap-8">
+        
+        <!-- צד ימין: טופס הזנה -->
+        <div class="bg-slate-800/90 p-6 rounded-xl shadow-[0_0_20px_rgba(0,0,0,0.5)] border border-slate-700 backdrop-blur-sm">
+            <div class="flex items-center space-x-2 space-x-reverse mb-6 border-b border-slate-600 pb-3">
+                <svg class="w-6 h-6 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2"></path></svg>
+                <h2 class="text-xl font-bold text-amber-500 uppercase tracking-wide">Mission Details & Docs</h2>
+            </div>
+            
+            <!-- פרטי נסיעה ומסמכים -->
+            <div class="grid grid-cols-2 gap-4 mb-4">
+                <div>
+                    <label class="block text-xs font-mono text-slate-400 mb-1">DESTINATION (מדינה/יעד)</label>
+                    <input type="text" id="destination" placeholder="e.g. Denmark" class="w-full p-2 rounded">
+                </div>
+                <div>
+                    <label class="block text-xs font-mono text-slate-400 mb-1">DATES (תאריכים)</label>
+                    <input type="text" id="dates" placeholder="e.g. Oct 4-11, 2026" class="w-full p-2 rounded">
+                </div>
+            </div>
+
+            <!-- העלאת תמונות קרנה -->
+            <div class="mb-6 bg-slate-900/50 p-3 rounded border border-slate-700">
+                <label class="block text-xs font-mono text-slate-400 mb-2">ATTACH CARNET IMAGES (העלאת קרנה)</label>
+                <input type="file" id="carnetImages" accept="image/*" multiple class="block w-full text-sm text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-xs file:font-bold file:bg-amber-600 file:text-slate-900 hover:file:bg-amber-500 cursor-pointer">
+                <div id="imagePreviewContainer" class="flex flex-wrap gap-2 mt-3 empty:hidden"></div>
+            </div>
+
+            <!-- יצירת מארז חדש -->
+            <div class="bg-slate-900/50 p-5 rounded-lg border border-slate-700 shadow-inner mb-6 relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-16 h-16 bg-amber-500/10 rounded-bl-full pointer-events-none"></div>
+                
+                <h3 class="font-bold text-lg mb-4 text-white">CONTAINER BUILDER</h3>
+                
+                <div class="grid grid-cols-3 gap-4 mb-5">
+                    <div>
+                        <label class="block text-xs font-mono text-slate-400 mb-1">TYPE</label>
+                        <select id="boxType" class="w-full p-2 rounded font-medium">
+                            <option value="Pelican">Pelican</option>
+                            <option value="Ski Bag">Ski Bag</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-mono text-slate-400 mb-1">NUMBER</label>
+                        <input type="number" id="boxNumber" value="1" class="w-full p-2 rounded text-center font-bold text-amber-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-mono text-slate-400 mb-1">OWNER</label>
+                        <input type="text" id="boxOwner" placeholder="e.g. Elad" class="w-full p-2 rounded">
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="block text-xs font-mono text-slate-400 mb-2">EQUIPMENT SELECTOR</label>
+                    <div id="equipmentList" class="grid grid-cols-1 gap-2 h-72 overflow-y-auto bg-slate-800 p-3 border border-slate-700 rounded shadow-inner mb-4">
+                        <!-- פריטים יוזרקו לכאן מ-JS -->
+                    </div>
+                </div>
+
+                <!-- הוספת פריט חדש ידנית -->
+                <div class="flex items-center space-x-2 space-x-reverse mb-6 bg-slate-800 p-1 border rounded border-slate-600 focus-within:border-amber-500 transition-colors">
+                    <input type="text" id="customItemInput" placeholder="Add custom item to database..." class="flex-grow border-none focus:ring-0 text-sm p-2 bg-transparent text-white placeholder-slate-500" dir="ltr">
+                    <button onclick="addCustomItem()" class="bg-slate-700 hover:bg-amber-600 text-slate-300 hover:text-white text-xs font-bold py-2 px-4 rounded transition flex items-center">
+                        <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+                        ADD
+                    </button>
+                </div>
+
+                <button onclick="addContainer()" class="w-full bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-500 hover:to-amber-400 text-slate-900 font-extrabold py-3 px-4 rounded transition shadow-[0_0_15px_rgba(245,158,11,0.3)] hover:shadow-[0_0_20px_rgba(245,158,11,0.5)] transform hover:-translate-y-0.5 uppercase tracking-wide">
+                    Commit Container to Manifest
+                </button>
+            </div>
+        </div>
+
+        <!-- צד שמאל: תצוגה מקדימה וייצוא -->
+        <div class="bg-slate-800/90 p-6 rounded-xl shadow-[0_0_20px_rgba(0,0,0,0.5)] border border-slate-700 backdrop-blur-sm flex flex-col relative overflow-hidden">
+            <div class="absolute bottom-0 left-0 opacity-5 pointer-events-none">
+                <svg width="200" height="200" viewBox="0 0 24 24" fill="white"><path d="M12 2L2 22h20L12 2zm0 4.5l7 14H5l7-14z"/></svg>
+            </div>
+
+            <div class="flex justify-between items-center mb-6 border-b border-slate-600 pb-3 relative z-10">
+                <div class="flex items-center space-x-2 space-x-reverse">
+                    <svg class="w-6 h-6 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                    <h2 class="text-xl font-bold text-amber-500 uppercase tracking-wide">Live Manifest Preview</h2>
+                </div>
+                <button onclick="generatePDF()" class="bg-slate-700 hover:bg-emerald-600 border border-emerald-600/50 hover:border-emerald-500 text-emerald-400 hover:text-white font-bold py-2 px-5 rounded transition flex items-center shadow-lg group">
+                    <svg class="w-5 h-5 ml-2 group-hover:animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                    EXPORT PDF
+                </button>
+            </div>
+            
+            <div id="previewArea" class="flex-grow overflow-y-auto bg-slate-900/80 p-5 rounded border border-slate-700 text-left font-mono relative z-10 h-[600px]" dir="ltr">
+                <div class="flex flex-col items-center justify-center h-full text-slate-500 opacity-70">
+                    <svg class="w-16 h-16 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"></path></svg>
+                    <p class="text-sm">NO CONTAINERS LOADED YET...</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- התבנית המוסתרת ל-PDF -->
+    <div id="pdf-content">
+        <h1>TACTICAL EQUIPMENT MANIFEST</h1>
+        <p><strong>Destination:</strong> <span id="pdf-dest"></span><br>
+        <strong>Dates:</strong> <span id="pdf-dates"></span></p>
+        <hr style="border-top: 1px solid #cbd5e1; margin-bottom: 20px;">
+        <div id="pdf-containers"></div>
+        <div id="pdf-carnet-section"></div>
+    </div>
+
+    <script>
+        const masterEquipment = [
+            "BNET HCLOS",
+            "Power Supply",
+            "Cable Set (RF + J9 + J10 + J11)",
+            "Accessories (Mouse, Camera, Charger)",
+            "ISR to EUR Power Adapter",
+            "Speaker + Microphone",
+            "RF Box Single",
+            "Variable Attenuator",
+            "Power Splitter",
+            "RF Cable (5m)",
+            "North Finder GNSS + GPS Cables",
+            "RF Adapter Toolbox",
+            "Screws Toolbox",
+            "Pedestal 42",
+            "Pedestal 43",
+            "Quickset Adapter",
+            "Mechanic Adapter",
+            "Gibraltar Tripod Adapter",
+            "Pedestal Power Cable",
+            "Chapman",
+            "Harris Sector Antenna",
+            "Small Tripod",
+            "Spare Cables",
+            "MTI Antennas",
+            "Omni Antennas",
+            "Black Omni Mount",
+            "Car Mount",
+            "Hercules Tripod",
+            "Caracal Mechanic Mount",
+            "Mechanic Tube",
+            "Base Weldment",
+            "BNET Holder Weldment",
+            "Clamp Weldment",
+            "Mechanic Screws",
+            "Laptop",
+            "BNET Brochures / Flyers"
+        ];
+
+        let containersData = [];
+        let uploadedImages = [];
+        let qtyOptionsHTML = '';
+        let snOptionsHTML = '';
+
+        window.onload = () => {
+            qtyOptionsHTML = '<option value="">Qty</option>';
+            for(let i=1; i<=30; i++) {
+                qtyOptionsHTML += `<option value="${i}">${i}</option>`;
+            }
+
+            snOptionsHTML = '<option value="">SN</option>';
+            for(let i=0; i<=100; i++) {
+                let num = i < 10 ? '0' + i : i;
+                snOptionsHTML += `<option value="${num}">${num}</option>`;
+            }
+
+            masterEquipment.forEach((item, index) => {
+                appendItemToDOM(item, index);
+            });
+        };
+
+        // טיפול בהעלאת תמונות
+        document.getElementById('carnetImages').addEventListener('change', function(event) {
+            const files = event.target.files;
+            for(let file of files) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    uploadedImages.push(e.target.result);
+                    updateImagePreview();
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+
+        function updateImagePreview() {
+            const container = document.getElementById('imagePreviewContainer');
+            container.innerHTML = '';
+            uploadedImages.forEach((imgSrc, index) => {
+                container.innerHTML += `
+                    <div class="relative w-16 h-16 border border-slate-600 rounded overflow-hidden group">
+                        <img src="${imgSrc}" class="object-cover w-full h-full opacity-80 group-hover:opacity-100 transition">
+                        <button onclick="removeImage(${index})" class="absolute top-0 right-0 bg-red-600/90 text-white text-[10px] w-4 h-4 flex items-center justify-center font-bold hover:bg-red-500">X</button>
+                    </div>
+                `;
+            });
+        }
+
+        function removeImage(index) {
+            uploadedImages.splice(index, 1);
+            updateImagePreview();
+            // איפוס ה-input כדי שאפשר יהיה להעלות את אותו קובץ שוב אם נמחק בטעות
+            document.getElementById('carnetImages').value = '';
+        }
+
+        function appendItemToDOM(itemName, index) {
+            const listDiv = document.getElementById('equipmentList');
+            const id = `item-${index}`;
+            const itemHTML = `
+                <div class="flex items-center space-x-2 space-x-reverse border-b border-slate-700/50 pb-2 mb-1 hover:bg-slate-700/30 p-1 rounded transition-colors">
+                    <input type="checkbox" id="${id}_check" value="${itemName}" class="w-5 h-5 rounded bg-slate-800 border-slate-600 focus:ring-amber-500 focus:ring-opacity-50">
+                    <label for="${id}_check" class="text-sm font-medium text-slate-300 flex-grow cursor-pointer" dir="ltr">${itemName}</label>
+                    <select id="${id}_qty" class="w-16 text-xs text-center" dir="ltr">
+                        ${qtyOptionsHTML}
+                    </select>
+                    <select id="${id}_sn" class="w-16 text-xs text-center" dir="ltr">
+                        ${snOptionsHTML}
+                    </select>
+                </div>
+            `;
+            listDiv.insertAdjacentHTML('beforeend', itemHTML);
+        }
+
+        function addCustomItem() {
+            const inputEl = document.getElementById('customItemInput');
+            const newItemName = inputEl.value.trim();
+            
+            if (!newItemName) {
+                alert("Please type an item name first.");
+                return;
+            }
+
+            masterEquipment.push(newItemName);
+            const newIndex = masterEquipment.length - 1;
+            
+            appendItemToDOM(newItemName, newIndex);
+            
+            const listDiv = document.getElementById('equipmentList');
+            listDiv.scrollTop = listDiv.scrollHeight;
+            inputEl.value = '';
+        }
+
+        function addContainer() {
+            const boxType = document.getElementById('boxType').value;
+            const boxNumber = document.getElementById('boxNumber').value;
+            const boxOwner = document.getElementById('boxOwner').value;
+            
+            let selectedItems = [];
+            
+            masterEquipment.forEach((item, index) => {
+                const checkEl = document.getElementById(`item-${index}_check`);
+                if(checkEl && checkEl.checked) {
+                    const qty = document.getElementById(`item-${index}_qty`).value;
+                    const sn = document.getElementById(`item-${index}_sn`).value;
+                    
+                    let finalString = item;
+                    
+                    if (qty) finalString = `${qty}x ${finalString}`;
+                    if (sn) finalString = `${finalString} (SN: ${sn})`;
+                    
+                    selectedItems.push(finalString);
+                }
+            });
+
+            if (selectedItems.length === 0) {
+                alert("System Error: Container is empty. Please select at least one item.");
+                return;
+            }
+
+            containersData.push({
+                title: `${boxType} ${boxNumber}` + (boxOwner ? ` - ${boxOwner}` : ''),
+                items: selectedItems
+            });
+
+            document.getElementById('boxNumber').value = parseInt(boxNumber) + 1;
+            masterEquipment.forEach((_, index) => {
+                const checkEl = document.getElementById(`item-${index}_check`);
+                if(checkEl) {
+                    checkEl.checked = false;
+                    document.getElementById(`item-${index}_qty`).value = '';
+                    document.getElementById(`item-${index}_sn`).value = '';
+                }
+            });
+
+            updatePreview();
+        }
+
+        function updatePreview() {
+            const previewArea = document.getElementById('previewArea');
+            const pdfContainers = document.getElementById('pdf-containers');
+            
+            if (containersData.length > 0 && previewArea.innerHTML.includes('NO CONTAINERS LOADED')) {
+                previewArea.innerHTML = ''; 
+            }
+            
+            previewArea.innerHTML = '';
+            pdfContainers.innerHTML = '';
+
+            containersData.forEach(container => {
+                const containerHTML = `
+                    <div class="mb-5 bg-slate-800/80 p-3 rounded-lg border border-slate-700 shadow">
+                        <h2 class="font-bold text-amber-500 text-md mb-2 flex items-center">
+                            <span class="bg-amber-500 text-slate-900 px-2 py-0.5 rounded-sm mr-2 text-xs">BOX</span>
+                            ${container.title}
+                        </h2>
+                        <ul class="list-none space-y-1 text-slate-300 text-sm">
+                            ${container.items.map(item => `
+                                <li class="flex items-start">
+                                    <span class="text-amber-500 mr-2 mt-0.5">▸</span>
+                                    <span>${item}</span>
+                                </li>`).join('')}
+                        </ul>
+                    </div>
+                `;
+                previewArea.innerHTML += containerHTML;
+                
+                const pdfSection = document.createElement('div');
+                pdfSection.innerHTML = `<h2>${container.title}</h2><ul>${container.items.map(item => `<li>${item}</li>`).join('')}</ul>`;
+                pdfContainers.appendChild(pdfSection);
+            });
+        }
+
+        function generatePDF() {
+            if(containersData.length === 0) {
+                alert("System Error: No containers to export.");
+                return;
+            }
+
+            document.getElementById('pdf-dest').innerText = document.getElementById('destination').value || 'TBD';
+            document.getElementById('pdf-dates').innerText = document.getElementById('dates').value || 'TBD';
+
+            // הוספת תמונות הקרנה ל-PDF אם ישנן
+            const pdfCarnetSection = document.getElementById('pdf-carnet-section');
+            pdfCarnetSection.innerHTML = '';
+            if (uploadedImages.length > 0) {
+                // page-break-before: always - מבטיח שהתמונות יתחילו בעמוד חדש ונקי
+                pdfCarnetSection.innerHTML = '<h1 style="page-break-before: always; margin-top: 20px;">ATA CARNET / DOCUMENTS</h1>';
+                uploadedImages.forEach(imgSrc => {
+                    pdfCarnetSection.innerHTML += `
+                        <div style="text-align: center; margin-bottom: 30px;">
+                            <img src="${imgSrc}" style="max-width: 100%; max-height: 900px; border: 2px solid #1e293b; border-radius: 4px;">
+                        </div>
+                    `;
+                });
+            }
+
+            const element = document.getElementById('pdf-content');
+            element.style.display = 'block';
+
+            const opt = {
+                margin:       15,
+                filename:     'BNET_Tactical_Manifest.pdf',
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { scale: 2 },
+                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+
+            html2pdf().set(opt).from(element).save().then(() => {
+                element.style.display = 'none';
+            });
+        }
+    </script>
 </body>
 </html>
